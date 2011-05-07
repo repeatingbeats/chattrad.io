@@ -1,0 +1,3 @@
+[submodule "lib/node-chat"]
+	path = lib/node-chat
+	url = git@github.com:repeatingbeats/node-chat.git
