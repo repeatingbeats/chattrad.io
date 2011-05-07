@@ -3,13 +3,12 @@ html
   head
     title chattrad.io
     link(rel='stylesheet', type='text/css', href='/stylesheets/layout.css')
+    script(type='text/javascript', src='/javascripts/jquery-1.4.4.min.js')
+    script(type='text/javascript', src='/nowjs/now.js')
+    script(type='text/javascript', src='/javascripts/client.js')
   body.login
     header
-    form#login
-      h1 Welcome to chattrad.io
-      p
-        label(for='login') Last.fm handle
-        input#login(type='text', autocomplete='off')
+      h1 chattrad.io
 
     section#channel
       section#frame
@@ -17,12 +16,8 @@ html
 
       ul#users.button_list
 
-      form#entry
-        fieldset
-          p
-            input#message(type='text', name='message', autocomplete='off')
-          input(type='submit', value='Send')
-
       !=body
 
-      footer
+      #chatbox
+        form#entry
+          textarea#message(type='text', name='message', autocomplete='off')

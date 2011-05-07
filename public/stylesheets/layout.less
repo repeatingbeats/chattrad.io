@@ -1,12 +1,55 @@
+input[type='submit'] {
+}
+
 html {
-  background: #333;
+  background: rgb(221,220,220);
 
   body {
     font-family: Helvetica, Arial, sans-serif;
+    border: 0;
     height: 100%;
+    margin: 0;
+    padding: 0;
     width: 100%;
 
     header {
+      margin: 0;
+      padding: 10px 20px;
+    }
+
+    section#channel {
+      margin: 0;
+
+      section#frame {
+        height: 200px;
+      }
+
+      #chatbox {
+        bottom: 0;
+        height: 50px;
+        margin: 0;
+        position: fixed;
+        vertical-align: 'baseline';
+        width: 100%;
+        z-index: 9999;
+
+        #entry {
+          margin: 0 10px;
+          padding-left: 10px;
+          width: 100%;
+        }
+
+        #message {
+          font: normal 14px;
+          margin: 0 auto;
+          overflow: hidden;
+          padding: 5px;
+          resize: none;
+          white-space: pre-wrap;
+          width: 90%;
+          word-wrap: break-word;
+        }
+      }
     }
   }
 }
@@ -16,5 +59,4 @@ html {
   -moz-box-shadow: @offsetx @offsety @blurr @color;
   -webkit-box-shadow: @offsetx @offsety @blurr @color;
 }
-
 
