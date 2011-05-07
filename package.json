@@ -3,6 +3,7 @@
   "description": "A hack day hack",
   "version": "0.0.1",
   "dependencies": {
-    "express": "=2.1.0"
+    "express": "=2.1.0",
+    "oauth": ">=0.9.0"
   }
 }
