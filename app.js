@@ -10,6 +10,12 @@ app.Rdio = require('./lib/rdio').Rdio({
   secret: app.API_KEYS['rdio']['secret']
 });
 
+var LastFmNode = require('lastfm').LastFmNode;
+app.lastfm = new LastFmNode({
+  api_key: app.API_KEYS['lastfm']['key'],
+  secret: app.API_KEYS['lastfm']['secret']
+});
+
 app.configure(function() {
   app.use(express.logger({
     format: '\x1b[1m:method\x1b[0m \x1b[33m:url\x1b[0m :response-time ms'
@@ -43,6 +49,21 @@ app.get('/', function(req, res) {
 
 app.get('/rooms/:id', function (req, res) {
   res.send('/rooms/' + req.params.id);
+});
+
+app.get('/lfm/:id', function (req, res) {
+  var username = req.params.id,
+      request = app.lastfm.request('user.getTopTracks', {
+        user: username,
+        handlers: {
+          success: function(data) {
+            res.send(data);
+          },
+          error: function(error) {
+            res.send(error.message);
+          }
+        }
+      });
 });
 
 if (!module.parent) {
