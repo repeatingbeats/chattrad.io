@@ -11,6 +11,12 @@ app.Rdio = require('./lib/rdio').Rdio({
   secret: app.API_KEYS['rdio']['secret']
 });
 
+var LastFmNode = require('lastfm').LastFmNode;
+app.lastfm = new LastFmNode({
+  api_key: app.API_KEYS['lastfm']['key'],
+  secret: app.API_KEYS['lastfm']['secret']
+});
+
 app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
