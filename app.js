@@ -1,5 +1,6 @@
 
 var express = require('express'),
+    jade = require('jade'),
     app = module.exports = express.createServer();
 
 var DOTCLOUD_APP_PORT = 8080;
@@ -11,6 +12,8 @@ app.Rdio = require('./lib/rdio').Rdio({
 });
 
 app.configure(function() {
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
   app.use(express.logger({
     format: '\x1b[1m:method\x1b[0m \x1b[33m:url\x1b[0m :response-time ms'
   }));
@@ -37,14 +40,6 @@ app.configure('production', function() {
   app.use(express.errorHandler());
 });
 
-app.get('/', function(req, res) {
-  res.send('<h1>GIANT HACK IN PROGRESS</h1>');
-});
-
-app.get('/rooms/:id', function (req, res) {
-  res.send('/rooms/' + req.params.id);
-});
-
 if (!module.parent) {
   app.listen(DOTCLOUD_APP_PORT);
   console.log("express server listening on port %d, env: %s",
@@ -52,3 +47,4 @@ if (!module.parent) {
               app.settings.env);
 }
 
+require('./routes/all')(app);
