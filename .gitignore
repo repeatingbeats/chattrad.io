@@ -3,3 +3,4 @@
 *.swo
 nodemon-ignore
 .monitor
+*.css

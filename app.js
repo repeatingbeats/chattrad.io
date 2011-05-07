@@ -20,6 +20,8 @@ app.lastfm = new LastFmNode({
 app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.compiler({ src: __dirname + '/public',
+                           enable: [ 'less' ]}));
   app.use(express.logger({
     format: '\x1b[1m:method\x1b[0m \x1b[33m:url\x1b[0m :response-time ms'
   }));
