@@ -2,5 +2,26 @@
 html
   head
     title chattrad.io
-  body
-    !=body
+  body.login
+    header
+    form#login
+      h1 Welcome to chattrad.io
+      p
+        label(for='login') Last handle
+        input#login(type='text', autocomplete='off')
+
+    section#channel
+      section#frame
+        #chat-log
+
+      ul#users.button_list
+
+      form#entry
+        fieldset
+          p
+            input#message(type='text', name='message', autocomplete='off')
+          input(type='submit', value='Send')
+
+      !=body
+
+      footer
