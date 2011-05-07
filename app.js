@@ -56,3 +56,21 @@ if (!module.parent) {
 }
 
 require('./routes/all')(app);
+
+// NowJS component
+var everyone = require("now").initialize(app);
+
+
+everyone.connected(function(){
+  console.log("Joined: " + this.now.name);
+});
+
+
+everyone.disconnected(function(){
+  console.log("Left: " + this.now.name);
+});
+
+everyone.now.distributeMessage = function(message){
+  everyone.now.receiveMessage(this.now.name, message);
+};
+
