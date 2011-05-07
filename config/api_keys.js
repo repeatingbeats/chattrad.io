@@ -9,5 +9,8 @@ module.exports = {
   'last.fm': {
     'key': 'e5be30848b04716316f7722379d7f38f',
     'secret': '68de876d1f3e63d0cd9ae68e33c39492'
+  },
+  'echonest': {
+    'key': 'Y45TWYBHDVWY9HFBI'
   }
 }
