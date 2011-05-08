@@ -34,7 +34,7 @@ input {
 }
 
 html {
-  background: rgb(221,220,220);
+  background: rgb(250,250,250);
   height: 100%;
 
   body {
@@ -56,15 +56,20 @@ html {
       width: 100%;
 
       #header {
-        border-bottom: 2px solid rgb(0,0,0);
+        .background-gradient(top, rgb(234,227,241), rgb(181,220,247));
+        border-bottom: 2px solid rgb(200,227,255);
         height: 96px;
         margin: 0;
         padding: 10px 20px;
         z-index: 9999;
 
-        h1 {
+        #banner {
+          background: url('/images/banner.png');
+          cursor: pointer;
           float: left;
+          height: 42px;
           margin-top: 30px;
+          width: 240px;
         }
 
         #player {
@@ -73,7 +78,7 @@ html {
           margin-top: 10px;
           padding: 0;
           position: relative;
-          width: 66%;
+          width: 55%;
           z-index: 9999;
 
           img#albumart {
@@ -85,7 +90,8 @@ html {
           }
 
           #slider {
-            background: rgb(20,20,20);
+            background: rgb(100,100,100);
+            .border-radius(4px);
             height: 10px;
             margin-top: 30px;
             margin-left: 80px;
@@ -93,16 +99,19 @@ html {
             position: relative;
 
             .preslider {
-              background-color: rgb(229,0,167);
+              background-color: rgb(255,80,67);
+              .border-radius(10px);
               height: 10px;
               position: relative;
               width: 50%;
 
               .sliderspot {
                 background-color: rgb(0,167,229);
+                .border-radius(10px);
+                border: 1px solid rgb(220,20,20);
                 float: right;
                 height: 15px;
-                margin-top: -0.16em;
+                margin-top: -0.2em;
               }
             }
 
@@ -156,7 +165,7 @@ html {
         bottom: 0;
         height: 50px;
         margin: 0 auto;
-        min-width: 650px;
+        min-width: 700px;
         position: fixed;
         width: 100%;
         z-index: 9999;
@@ -194,7 +203,7 @@ html {
         width: 400px;
 
         #rdiohead {
-          .background-gradient(top, rgb(34,87,161), rgb(31,80,147));
+          .background-gradient(top, rgb(234,227,241), rgb(131,220,247));
           .border-radius-top(5px);
           border-bottom: 2px solid rgb(40,80,150);
           font-size: 20px;
@@ -258,9 +267,9 @@ html {
 }
 
 .caphead {
-  .background-gradient(top, rgb(226,219,223), rgb(192,197,202));
+  .background-gradient(top, rgb(234,227,241), rgb(131,220,247));
   .border-radius-top(5px);
-  border-bottom: 2px solid rgb(200,205,205);
+  border-bottom: 2px solid rgb(200,227,255);
   height: 40px;
   margin-bottom: 20px;
   margin-top: 0;
@@ -299,6 +308,15 @@ html {
   -moz-border-radius-topleft: @radius;
   -webkit-border-top-left-radius: @radius;
   -webkit-border-top-right-radius: @radius;
+}
+
+.border-radius-left (@radius) {
+  border-top-left-radius: @radius;
+  border-bottom-left-radius: @radius;
+  -moz-border-radius-bottomleft: @radius;
+  -moz-border-radius-topleft: @radius;
+  -webkit-border-top-left-radius: @radius;
+  -webkit-border-top-bottom-radius: @radius;
 }
 
 .box-shadow (@offsetx, @offsety, @blurr, @color) {
