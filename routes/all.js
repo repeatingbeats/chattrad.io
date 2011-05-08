@@ -1,8 +1,25 @@
-var station = require('./../lib/station');
+var user = require('./../lib/user'),
+    station = require('./../lib/station');
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
-    res.render('index');
+    console.log(req.session);
+    if (!req.session.oauth_access_token) {
+      app.Rdio.requestToken(function(err) {
+                              console.log('rdio api call done bad. ' + err);
+                            }, {}, function(data) {
+                              // I'd put this in a for loop but I'm lazy.
+                              req.session.oa = data.oa;
+                              req.session.oauth_token = data.oauth_token;
+                              req.session.oauth_token_secret = data.oauth_token_secret;
+
+                              res.redirect('https://www.rdio.com/oauth/authorize?oauth_token=' +
+                                           req.session.oauth_token);
+                            });
+      res.redirect('/login');
+    } else {
+      res.render('index');
+    }
   });
 
   app.get('/rooms/:id', function (req, res) {
@@ -20,4 +37,7 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/login', function(req, res) {
+    res.render('login');
+  });
 };

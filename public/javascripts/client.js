@@ -20,11 +20,14 @@ $(document).ready(function(){
   });
 
   /* Send a message */
-  $("#send-button").click(function(){
-    var msg = $("#message").val();
-    if (!msg || msg.length < 1) {
+  $("#message").keydown(function(e){
+    var code = (e.keyCode) ? e.keyCode : e.which,
+        msg = $("#message").val();
+
+    if (!msg || msg.length < 1 || code !== 13) {
       return;
     }
+
     now.distributeMessage(msg);
     $("#message").val("");
   });
@@ -40,6 +43,7 @@ $(document).ready(function(){
 
   /* Receive a message */
   now.receiveMessage = function(name, message){
+    alert(message);
     $("#chat-log").append("<br>" + name + ": " + message);
   }
 

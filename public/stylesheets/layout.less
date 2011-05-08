@@ -87,40 +87,32 @@ html {
       }
 
       #channel {
-        height: 100%;
-        margin: 0;
-        position: relative;
+        height: auto;
         width: 100%;
 
         #frame {
-          height: 100%;
-          position: relative;
-
           #users,
           #chat-log {
             margin: 0;
             padding: 0;
-            height: 100%;
             overflow-x: hidden;
-            overflow-x: auto;
-            position: relative;
+            overflow-y: auto;
           }
 
           #users {
             border-right: 1px solid rgb(0,0,0);
             float: left;
-            height: 100%;
+            bottom: 50px;
+            position: absolute;
+            top: 118px;
             width: 200px;
           }
 
           #chat-log {
-            float: left;
-            margin-left: 220px;
+            left: 200px;
+            padding: 10px;
             position: absolute;
-
-            #backlog {
-              width: 100%;
-            }
+            right: 0;
           }
         }
       }

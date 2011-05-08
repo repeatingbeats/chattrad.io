@@ -23,6 +23,8 @@ app.echonest.api_key = app.API_KEYS['echonest']['key'];
 app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: 'omgwtfcoocooroo' }));
   app.use(express.compiler({ src: __dirname + '/public',
                            enable: [ 'less' ]}));
   app.use(express.logger({
@@ -82,6 +84,8 @@ everyone.disconnected(function(){
 everyone.now.distributeMessage = function(message){
   var user = Users[this.user.clientId];
 
+  console.log(message);
+  console.log((user));
   // make sure we have an internal user and room
   if (!user || !user.room) return;
   user.room.roomGroup.now.receiveMessage(user.nick, message);
