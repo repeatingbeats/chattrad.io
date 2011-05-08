@@ -84,13 +84,18 @@ everyone.now.distributeMessage = function(message){
   user.room.roomGroup.now.receiveMessage(user.nick, message);
 };
 
+// Get the models we'll need
 require('./lib/room.js');
 require('./lib/user.js');
+require('./lib/song.js');
 
+// Maps of all Rooms and Users
 Rooms = {};
 Users = {};
 
+/* A join method for every client */
 everyone.now.join = function(roomName) {
+  // See if the room already exists, if not create it
   var room = null;
   if (roomName in Rooms) {
     room = Rooms[roomName];
@@ -100,6 +105,7 @@ everyone.now.join = function(roomName) {
     Rooms[roomName] = room;
   }
 
+  // Find our internal User object for the user
   var user = null;
   if (this.user.clientId in Users) {
     user = Users[this.user.clientId];
@@ -110,27 +116,29 @@ everyone.now.join = function(roomName) {
     Users[this.user.clientId] = user;
   }
 
+  // jhawk temporary we give the room a song, we'll normally have this
+  if (!room.song) {
+    room.song = new Song("999");
+  }
+
+  // Add the user to our room and nowjs group
   room.addUser(user);
+
+  // Start the user at the correct position in the playing song.
+  // We might need to be more advanced about this if it's too easy for
+  // things to desynchronize.
+  this.now.playAt(room.song.id, room.song.pos);
 }
 
-everyone.now.updateStatus = function(status){
+// A method for all users to report back where they are in a song
+everyone.now.updatePosition = function(pos){
 
-  // If we don't have an internal user we can't do anything,
-  // but this really shouldn't happen.
+  // get the internal User object
   var user = Users[this.user.clientId];
-  if (!user || !user.room) {
-    return;
-  }
-  var str = "";
-  if (status == STATUS.FINISHED) {
-    str = "finished!";
-  }
-  else if (status == STATUS.PLAYING) {
-    str = "playing!";
-  }
-  else {
-    str = "something else!";
-  }
 
-  user.room.roomGroup.now.echo(str + " " + user.room.name);
+  // if this user is further along than our last position, update
+  // that position
+  if (pos > user.room.song.pos) {
+    user.room.song.pos = pos;
+  }
 };
