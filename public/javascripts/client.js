@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-  now.name = DataTransfer.username;
-
   /* Rdio Flash player setup */
   $.getJSON('/flashvars', function (data) {
     var flashvars = data;

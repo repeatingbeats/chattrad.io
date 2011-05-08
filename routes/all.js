@@ -16,6 +16,13 @@ module.exports = function(app) {
                                            req.session.oauth_token);
                             });
     } else {
+      res.render('index');
+    }
+  });
+
+  app.get('/rooms/:id', function (req, res) {
+    var room = req.params.id;
+    if (app.Rooms[room]) {
       app.Rdio.request(function (err) {
         res.send(JSON.stringify({ 'oops': err.data }));
       }, {
@@ -24,15 +31,9 @@ module.exports = function(app) {
         token_secret: req.session.oauth_access_token_secret ,
       }, function (data) {
         var userUrl = data.result.url.split('/');
-        res.render('index', {username: userUrl[userUrl.length -2]});
+        res.render('room', {username: userUrl[userUrl.length -2],
+                            roomName: room});
       });
-    }
-  });
-
-  app.get('/rooms/:id', function (req, res) {
-    var room = req.params.id;
-    if (app.Rooms[room]) {
-      res.render('room');
     } else {
       // create a room?
       res.send('YOU BROKE IT');

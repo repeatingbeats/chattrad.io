@@ -1,10 +1,19 @@
+script(type='text/javascript)
+  DataTransfer = {
+    username: '#{username}'
+  };
+  $(document).ready(function(){
+    now.ready(function() {
+      now.join('#{roomName}');
+    });
+    now.name = '#{username}'
+  });
+
 #channel
   #frame
     #users
     #chat-log
-      <span>kurt: ffuck fuck fuck fuck fuck fuckfuck fuck fuck fuck fuck fuckfuck fuck fuck fuck fuck fuckfuck fuck fuck fuck fuck fuckfuck fuck fuck fuck fuck fuckuck fuck fuck fuck fuck fuck</span>
-      <br/>
-      <span>kurt: i did it </span>
+      <span>Welcome to #{roomName}'s channel </span>
 
 .clearfix
 

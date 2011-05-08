@@ -129,14 +129,12 @@ everyone.now.join = function(roomName) {
 
   // Find our internal User object for the user
   var user = null;
-  if (this.user.clientId in Users) {
-    user = Users[this.user.clientId];
-    if (user.room) user.room.removeUser(user);
-  }
-  else {
+  if (!this.user.clientId in Users) {
     // If this user wasn't registered, register now
     this.now.registerUser();
   }
+  user = Users[this.user.clientId];
+  if (user.room) user.room.removeUser(user);
 
   // jhawk temporary we give the room a song, we'll normally have this
   if (!room.song) {
