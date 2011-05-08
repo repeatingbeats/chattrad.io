@@ -79,6 +79,7 @@ $(document).ready(function(){
 var Chattradio = Chattradio || {};
 
 Chattradio.rdioswf = null;
+Chattradio.track = null;
 
 Chattradio.RdioListener = {
 
@@ -88,10 +89,10 @@ Chattradio.RdioListener = {
     Chattradio.rdioswf.rdio_play("t7349349");
     $.getJSON('/info', function (data) {
       console.log('kurt');
-      var track = data.result.t7349349;
-      console.log(track);
-      $('#artistinfo').html(track.artist + ' - ' + track.name);
-      $('#albumart').attr('src', track.icon);
+      Chattradio.track = data.result.t7349349;
+      console.log(Chattradio.track);
+      $('#artistinfo').html(Chattradio.track.artist + ' - ' + Chattradio.track.name);
+      $('#albumart').attr('src', Chattradio.track.icon);
     });
   },
 
@@ -116,8 +117,13 @@ Chattradio.RdioListener = {
   },
 
   positionChanged: function (position) {
-    $('.preslider').css('width', position + '%');
+    if (position <= 0) { return; }
+
+    var percent = position / Math.floor(Chattradio.track.duration) * 100;
+    $('.preslider').css('width', percent + '%');
     console.log('positionChanged: ' + position);
+    console.log('percent: ' + percent);
+    console.log('duration: ' + Chattradio.track.duration);
   },
 
   shuffleChanged: function (shuffle) {
