@@ -7,17 +7,24 @@ html
     script(type='text/javascript', src='/nowjs/now.js')
     script(type='text/javascript', src='/javascripts/client.js')
   body.login
-    header
+    #header
       h1 chattrad.io
+      #player
+        img#albumart(width=70, height=70)
+        #slider
+          .preslider
+            .sliderspot(style='width:15px;position:relative;')
+          .postslider
+          .innerslider
 
-    section#channel
-      section#frame
+    #channel
+      #frame
         #chat-log
 
-      ul#users.button_list
+        !=body
 
-      !=body
+      #users
+    #chatbox
+      form#entry
+        textarea#message(type='text', name='message', autocomplete='off')
 
-      #chatbox
-        form#entry
-          textarea#message(type='text', name='message', autocomplete='off')

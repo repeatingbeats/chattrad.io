@@ -1,43 +1,115 @@
+div {
+  display: block;
+}
+
 input[type='submit'] {
 }
 
 html {
   background: rgb(221,220,220);
+  height: 100%;
 
   body {
     font-family: Helvetica, Arial, sans-serif;
     border: 0;
     height: 100%;
     margin: 0;
+    min-height: 400px;
+    min-width: 650px;
     padding: 0;
     width: 100%;
 
-    header {
+    #header {
+      border: 2px solid orange;
+      height: 100px;
       margin: 0;
       padding: 10px 20px;
-    }
+      z-index: 9999;
 
-    section#channel {
-      margin: 0;
-
-      section#frame {
-        height: 200px;
+      h1 {
+        float: left;
+        margin-top: 30px;
       }
 
-      #chatbox {
-        bottom: 0;
-        height: 50px;
-        margin: 0;
-        position: fixed;
-        vertical-align: 'baseline';
-        width: 100%;
+      #player {
+        border: 2px solid purple;
+        float: right;
+        height: 70px;
+        margin-top: 10px;
+        padding: 0;
+        position: relative;
+        width: 66%;
         z-index: 9999;
 
-        #entry {
-          margin: 0 10px;
-          padding-left: 10px;
-          width: 100%;
+        img#albumart {
+          border: 2px solid green;
+          float: left;
+          margin: 0;
+          padding: 0;
+          position: relative;
         }
+
+        #slider {
+          background: rgb(20,20,20);
+          border: 2px solid red;
+          height: 10px;
+          margin-top: 30px;
+          margin-left: 80px;
+          margin-right: 10px;
+          position: relative;
+
+          .preslider {
+            background-color: rgb(229,0,167);
+            height: 10px;
+            position: relative;
+            width: 50%;
+
+            .sliderspot {
+              border: 2px solid blue;
+              background-color: rgb(0,167,229);
+              float: right;
+              height: 15px;
+            }
+          }
+
+          .innerslider {
+            border: 2px solid red;
+            height: 10px;
+            margin-top: -10px;
+            position: relative;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    #channel {
+      #frame {
+        #chat-log {
+        }
+      }
+
+      #users {
+      }
+    }
+
+    #chatbox {
+      border: 2px solid red;
+      bottom: 0;
+      height: 50px;
+      margin: 0;
+      min-width: 650px;
+      padding-top: 10px;
+      position: fixed;
+      vertical-align: 'baseline';
+      width: 100%;
+      z-index: 9999;
+
+      #entry {
+        margin: 0 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100%;
 
         #message {
           font: normal 14px;
@@ -59,4 +131,3 @@ html {
   -moz-box-shadow: @offsetx @offsety @blurr @color;
   -webkit-box-shadow: @offsetx @offsety @blurr @color;
 }
-
