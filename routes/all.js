@@ -56,7 +56,7 @@ module.exports = function(app) {
                                               token_secret:
                                                 req.session.oauth_access_token_secret },
                                             function(data) {
-                                              res.render('verify');
+                                              res.redirect('/');
                                             });
                          });
   });
