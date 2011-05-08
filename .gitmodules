@@ -1,6 +1,3 @@
 [submodule "lib/node-chat"]
 	path = lib/node-chat
 	url = git@github.com:repeatingbeats/node-chat.git
-[submodule "lib/echonestjs"]
-	path = lib/echonestjs
-	url = git@github.com:repeatingbeats/echonestjs.git
