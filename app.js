@@ -77,7 +77,11 @@ everyone.disconnected(function(){
 });
 
 everyone.now.distributeMessage = function(message){
-  everyone.now.receiveMessage(this.now.name, message);
+  var user = Users[this.user.clientId];
+
+  // make sure we have an internal user and room
+  if (!user || !user.room) return;
+  user.room.roomGroup.now.receiveMessage(user.nick, message);
 };
 
 require('./lib/room.js');
@@ -102,7 +106,7 @@ everyone.now.join = function(roomName) {
     if (user.room) user.room.removeUser(user);
   }
   else { // jhawk we won't do this normally, we'll create the User onload
-    user = new User(this.user.name, this.user.clientId);
+    user = new User(this.now.name, this.user.clientId);
     Users[this.user.clientId] = user;
   }
 
@@ -110,10 +114,6 @@ everyone.now.join = function(roomName) {
 }
 
 everyone.now.updateStatus = function(status){
-  // if we don't have a nowjs user we can't do anything
-  if (!this.user) {
-    return;
-  }
 
   // If we don't have an internal user we can't do anything,
   // but this really shouldn't happen.
@@ -132,7 +132,5 @@ everyone.now.updateStatus = function(status){
     str = "something else!";
   }
 
-
-  var roomGroup = nowjs.getGroup(user.room.name);
-  roomGroup.now.echo(str + " " + user.room.name);
+  user.room.roomGroup.now.echo(str + " " + user.room.name);
 };
