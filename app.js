@@ -58,19 +58,79 @@ if (!module.parent) {
 require('./routes/all')(app);
 
 // NowJS component
-var everyone = require("now").initialize(app);
+var nowjs = require("now");
+var everyone = nowjs.initialize(app);
 
+STATUS = {
+  PLAYING: 0,
+  FINISHED: 1,
+};
+
+everyone.now.STATUS = STATUS;
 
 everyone.connected(function(){
   console.log("Joined: " + this.now.name);
 });
-
 
 everyone.disconnected(function(){
   console.log("Left: " + this.now.name);
 });
 
 everyone.now.distributeMessage = function(message){
-  everyone.now.receiveMessage(this.now.name, message);
+  var user = Users[this.user.clientId];
+
+  // make sure we have an internal user and room
+  if (!user || !user.room) return;
+  user.room.roomGroup.now.receiveMessage(user.nick, message);
 };
 
+require('./lib/room.js');
+require('./lib/user.js');
+
+Rooms = {};
+Users = {};
+
+everyone.now.join = function(roomName) {
+  var room = null;
+  if (roomName in Rooms) {
+    room = Rooms[roomName];
+  }
+  else {
+    room = new Room(roomName);
+    Rooms[roomName] = room;
+  }
+
+  var user = null;
+  if (this.user.clientId in Users) {
+    user = Users[this.user.clientId];
+    if (user.room) user.room.removeUser(user);
+  }
+  else { // jhawk we won't do this normally, we'll create the User onload
+    user = new User(this.now.name, this.user.clientId);
+    Users[this.user.clientId] = user;
+  }
+
+  room.addUser(user);
+}
+
+everyone.now.updateStatus = function(status){
+
+  // If we don't have an internal user we can't do anything,
+  // but this really shouldn't happen.
+  var user = Users[this.user.clientId];
+  if (!user || !user.room) {
+    return;
+  }
+  var str = "";
+  if (status == STATUS.FINISHED) {
+    str = "finished!";
+  }
+  else if (status == STATUS.PLAYING) {
+    str = "playing!";
+  }
+  else {
+    str = "something else!";
+  }
+
+  user.room.roomGroup.now.echo(str + " " + user.room.name);
+};
