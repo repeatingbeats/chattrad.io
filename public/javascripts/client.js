@@ -1,5 +1,20 @@
 $(document).ready(function(){
 
+  /* Rdio Flash player setup */
+  $.getJSON('/flashvars', function (data) {
+    var flashvars = data;
+    flashvars['listener'] = 'Chattradio.RdioListener';
+    var params = { 'allowScriptAccess': 'always' };
+    var attributes = {};
+    swfobject.embedSWF('http://rdio.com/api/swf/',
+                       'rdioswf',
+                       1, 1, '9.0.0',
+                       'expressInstall.swf',
+                       flashvars,
+                       params,
+                       attributes);
+  });
+
   /* Inform the server of our position in the song periodically */
   var songPlaying = false;
   setInterval(function() {
@@ -61,3 +76,59 @@ $(document).ready(function(){
   }
 
 });
+
+var Chattradio = Chattradio || {};
+
+Chattradio.rdioswf = null;
+
+Chattradio.RdioListener = {
+
+  ready: function() {
+    console.log('rdio ready');
+    Chattradio.rdioswf = $('#rdioswf').get(0);
+    // for now, just start playing
+    Chattradio.rdioswf.rdio_play("t7349349");
+  },
+
+  playStateChanged: function (state) {
+    console.log('playStateChanged: ' + state);
+  },
+
+  playingTrackChanged: function (track, pos) {
+    console.log('playingTrackChanged: ' + track + ', pos: ' + pos);
+  },
+
+  playingSourceChanged: function (source) {
+    console.log('playingSourceChanced: ' + source);
+  },
+
+  volumeChanged: function (vol) {
+    console.log('volumeChanged: ' + vol);
+  },
+
+  muteChanged: function (mute) {
+    console.log('muteChanged: ' + mute);
+  },
+
+  positionChanged: function (position) {
+    console.log('positionChanged: ' + position);
+  },
+
+  shuffleChanged: function (shuffle) {
+    console.log('shuffleChanged: ' + shuffle);
+  },
+
+  queueChanged: function (queue) {
+    console.log('queueChanged: ' + queue);
+  },
+
+  repeatChanged: function (repeat) {
+    console.log('repeatChanged: ' + repeat);
+  },
+
+  playingSomewhereElse: function () {
+    console.log('Why would you play somewhere else? Why?');
+  }
+
+};
+

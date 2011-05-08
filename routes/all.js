@@ -35,6 +35,22 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/flashvars', function (req, res) {
+    var domain = app.set('domain');
+    app.Rdio.request(function (err) {
+      res.send(JSON.stringify({ 'oops': err.data }));
+    }, {
+      method: 'getPlaybackToken',
+      domain: domain
+    }, function (data) {
+      var flashvars = {
+        playbackToken: data.result,
+        domain: domain
+      };
+      res.send(JSON.stringify(flashvars));
+    });
+  });
+
   app.get('/verify', function(req, res) {
     res.render('verify');
   });
