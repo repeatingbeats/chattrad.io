@@ -3,7 +3,7 @@ var user = require('./../lib/user'),
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
-    if (!req.session.oauth_access_token) {
+    if (false) {
       app.Rdio.requestToken(function(err) {
                               console.log('rdio api call done bad. ' + err);
                             }, {}, function(data) {
@@ -56,6 +56,7 @@ module.exports = function(app) {
                                               token_secret:
                                                 req.session.oauth_access_token_secret },
                                             function(data) {
+                                              console.log(JSON.stringify(data));
                                               res.redirect('/');
                                             });
                          });
