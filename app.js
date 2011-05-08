@@ -58,7 +58,7 @@ app.configure('development', function() {
 });
 
 app.configure('production', function() {
-  app.set('domain', 'chattrad.io');
+  app.set('domain', 'www.chattrad.io');
   app.use(express.errorHandler());
   app.Rdio = require('./lib/rdio').Rdio({
     key: app.API_KEYS['rdio']['key'],
@@ -95,9 +95,13 @@ everyone.disconnected(function(){
   console.log("Left: " + this.now.name);
 });
 
+var check = require('validator').check,
+    sanitize = require('validator').sanitize
 everyone.now.distributeMessage = function(message){
   var user = Users[this.user.clientId];
 
+  message = sanitize(message).trim();
+  message = sanitize(message).xss();
   console.log(message);
   console.log((user));
   // make sure we have an internal user and room
