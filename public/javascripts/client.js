@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+  now.name = DataTransfer.username;
+
   /* Rdio Flash player setup */
   $.getJSON('/flashvars', function (data) {
     var flashvars = data;
@@ -25,13 +27,19 @@ $(document).ready(function(){
   }, 5000);
 
   /* Join a room */
-  $("#join-button").click(function(){
-    var roomName = $("#channel-input").val();
-    if (!roomName || roomName.length < 1) {
-      roomName = "default-room";
+  $("#join-channel").keydown(function(e){
+    now.registerUser();
+    var code = (e.keyCode) ? e.keyCode : e.which,
+        roomName = $("#join-channel").val();
+
+    if (!roomName || roomName.length < 1 || code !== 13) {
+      return;
     }
+    e.preventDefault();
+
     now.join(roomName);
     songPlaying = true;
+    $("#join-channel").val("");
   });
 
   /* Send a message */
@@ -42,6 +50,7 @@ $(document).ready(function(){
     if (!msg || msg.length < 1 || code !== 13) {
       return;
     }
+    e.preventDefault();
 
     now.distributeMessage(msg);
     $("#message").val("");
@@ -52,9 +61,6 @@ $(document).ready(function(){
   getPosition = function() {
     return ++counter;
   }
-
-  // jhawk temporary force the user to give us a name, use Rdio username
-  //now.name = prompt("What's your name?", "");
 
   /* Receive a message */
   now.receiveMessage = function(name, message){
@@ -86,7 +92,7 @@ Chattradio.RdioListener = {
   ready: function() {
     console.log('rdio ready');
     Chattradio.rdioswf = $('#rdioswf').get(0);
-    // uncomment this to test hard-coded playback 
+    // uncomment this to test hard-coded playback
     // Chattradio.rdioswf.rdio_play("t7349349");
   },
 
