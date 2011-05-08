@@ -52,6 +52,28 @@ module.exports = function(app) {
   });
 
   app.get('/verify', function(req, res) {
-    res.render('verify');
+    app.Rdio.accessToken(function(err) {
+                           console.log('rdio access token gone bad. ' + err);
+                           // should redirect somewhere here
+                         },
+                         { oauth_token: req.session.oauth_token,
+                           oauth_token_secret: req.session.oauth_token_secret,
+                           oauth_verifier: req.param('oauth_verifier') },
+                         function(data) {
+                           req.session.oauth_access_token = data.oauth_access_token;
+                           req.session.oauth_access_token_secret =
+                             data.oauth_access_token_secret;
+                           app.Rdio.request(function(error) {
+                                              // XXX - have to do something here
+                                              console.log('ERR: ' + JSON.stringify(error));
+                                            },
+                                            { method: 'currentUser',
+                                              token: req.session.oauth_access_token,
+                                              token_secret:
+                                                req.session.oauth_access_token_secret },
+                                            function(data) {
+                                              res.redirect('/');
+                                            });
+                         });
   });
 };
