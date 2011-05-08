@@ -1,3 +1,5 @@
+var station = require('./../lib/station');
+
 module.exports = function(app) {
   app.get('/', function(req, res) {
     res.render('index');
@@ -9,17 +11,11 @@ module.exports = function(app) {
 
   // temporary test route
   app.get('/lfm/:id', function (req, res) {
-    var username = req.params.id;
-
-    app.lastfm.request('user.getTopTracks', {
-      user: username,
-      handlers: {
-        success: function(data) {
-          res.send(data);
-        },
-        error: function(error) {
-          res.send(error.message);
-        }
+    station.getStationForUser(req.params.id, function(err, station) {
+      if (err) {
+        res.send(err.message);
+      } else {
+        res.send(station._status);
       }
     });
   });
