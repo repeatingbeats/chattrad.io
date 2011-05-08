@@ -59,3 +59,89 @@ if (!module.parent) {
 }
 
 require('./routes/all')(app);
+
+// NowJS component
+var nowjs = require("now");
+var everyone = nowjs.initialize(app);
+
+STATUS = {
+  PLAYING: 0,
+  FINISHED: 1,
+};
+
+everyone.now.STATUS = STATUS;
+
+everyone.connected(function(){
+  console.log("Joined: " + this.now.name);
+});
+
+everyone.disconnected(function(){
+  console.log("Left: " + this.now.name);
+});
+
+everyone.now.distributeMessage = function(message){
+  var user = Users[this.user.clientId];
+
+  // make sure we have an internal user and room
+  if (!user || !user.room) return;
+  user.room.roomGroup.now.receiveMessage(user.nick, message);
+};
+
+// Get the models we'll need
+require('./lib/room.js');
+require('./lib/user.js');
+require('./lib/song.js');
+
+// Maps of all Rooms and Users
+Rooms = {};
+Users = {};
+
+/* A join method for every client */
+everyone.now.join = function(roomName) {
+  // See if the room already exists, if not create it
+  var room = null;
+  if (roomName in Rooms) {
+    room = Rooms[roomName];
+  }
+  else {
+    room = new Room(roomName);
+    Rooms[roomName] = room;
+  }
+
+  // Find our internal User object for the user
+  var user = null;
+  if (this.user.clientId in Users) {
+    user = Users[this.user.clientId];
+    if (user.room) user.room.removeUser(user);
+  }
+  else { // jhawk we won't do this normally, we'll create the User onload
+    user = new User(this.now.name, this.user.clientId);
+    Users[this.user.clientId] = user;
+  }
+
+  // jhawk temporary we give the room a song, we'll normally have this
+  if (!room.song) {
+    room.song = new Song("999");
+  }
+
+  // Add the user to our room and nowjs group
+  room.addUser(user);
+
+  // Start the user at the correct position in the playing song.
+  // We might need to be more advanced about this if it's too easy for
+  // things to desynchronize.
+  this.now.playAt(room.song.id, room.song.pos);
+}
+
+// A method for all users to report back where they are in a song
+everyone.now.updatePosition = function(pos){
+
+  // get the internal User object
+  var user = Users[this.user.clientId];
+
+  // if this user is further along than our last position, update
+  // that position
+  if (pos > user.room.song.pos) {
+    user.room.song.pos = pos;
+  }
+};

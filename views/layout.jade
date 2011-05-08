@@ -3,26 +3,28 @@ html
   head
     title chattrad.io
     link(rel='stylesheet', type='text/css', href='/stylesheets/layout.css')
+    script(type='text/javascript', src='/javascripts/jquery-1.4.4.min.js')
+    script(type='text/javascript', src='/nowjs/now.js')
+    script(type='text/javascript', src='/javascripts/client.js')
   body.login
-    header
-    form#login
-      h1 Welcome to chattrad.io
-      p
-        label(for='login') Last.fm handle
-        input#login(type='text', autocomplete='off')
+    #header
+      h1 chattrad.io
+      #player
+        img#albumart(width=70, height=70)
+        #slider
+          .preslider
+            .sliderspot(style='width:15px;position:relative;')
+          .postslider
+          .innerslider
 
-    section#channel
-      section#frame
+    #channel
+      #frame
         #chat-log
 
-      ul#users.button_list
+        !=body
 
+      #users
+    #chatbox
       form#entry
-        fieldset
-          p
-            input#message(type='text', name='message', autocomplete='off')
-          input(type='submit', value='Send')
+        textarea#message(type='text', name='message', autocomplete='off')
 
-      !=body
-
-      footer
