@@ -9,7 +9,7 @@ app.API_KEYS = require('./config/api_keys');
 app.Rdio = require('./lib/rdio').Rdio({
   key: app.API_KEYS['rdio']['key'],
   secret: app.API_KEYS['rdio']['secret'],
-  cb: 'http://localhost:8080/login'
+  cb: 'http://localhost:8080/verify'
 });
 
 var LastFmNode = require('lastfm').LastFmNode;
