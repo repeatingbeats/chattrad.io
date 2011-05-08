@@ -86,8 +86,8 @@ Chattradio.RdioListener = {
   ready: function() {
     console.log('rdio ready');
     Chattradio.rdioswf = $('#rdioswf').get(0);
-    // for now, just start playing
-    Chattradio.rdioswf.rdio_play("t7349349");
+    // uncomment this to test hard-coded playback 
+    // Chattradio.rdioswf.rdio_play("t7349349");
   },
 
   playStateChanged: function (state) {
