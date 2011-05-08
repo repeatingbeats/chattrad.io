@@ -111,8 +111,9 @@ require('./lib/user.js');
 require('./lib/song.js');
 
 // Maps of all Rooms and Users
-Rooms = {};
-Users = {};
+app.Rooms = Rooms = {};
+app.Users = Users = {};
+app.Room = Room;
 
 /* A join method for every client */
 everyone.now.join = function(roomName) {

@@ -21,7 +21,13 @@ module.exports = function(app) {
   });
 
   app.get('/rooms/:id', function (req, res) {
-    res.send('/rooms/' + req.params.id);
+    var room = req.params.id;
+    if (app.Rooms[room]) {
+      res.render('room');
+    } else {
+      // create a room?
+      res.send('YOU BROKE IT');
+    }
   });
 
   // temporary test route
@@ -31,6 +37,26 @@ module.exports = function(app) {
         res.send(err.message);
       } else {
         res.send(station._status);
+      }
+    });
+  });
+
+  app.post('/rooms', function (req, res) {
+    var username = req.param('lastfm');
+    console.log('posting username:' + username);
+    station.getStationForUser(username, function(err, station) {
+      var room
+      if (username in app.Rooms) {
+        room = app.Rooms[username];
+      } else {
+        room = new app.Room(username);
+      }
+      app.Rooms[username] = room;
+      room.station = station;
+      if (err) {
+        res.send(err.message);
+      } else {
+        res.redirect('/rooms/' + username);
       }
     });
   });
