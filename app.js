@@ -32,6 +32,7 @@ app.configure(function() {
 });
 
 app.configure('test', function() {
+  app.set('domain', 'localhost');
   app.use(express.errorHandler({
     dumpExceptions: true,
     showStack: true
@@ -44,6 +45,7 @@ app.configure('test', function() {
 });
 
 app.configure('development', function() {
+  app.set('domain', 'localhost');
   app.use(express.errorHandler({
     dumpExceptions: true,
     showStack: true
@@ -56,6 +58,7 @@ app.configure('development', function() {
 });
 
 app.configure('production', function() {
+  app.set('domain', 'chattrad.io');
   app.use(express.errorHandler());
   app.Rdio = require('./lib/rdio').Rdio({
     key: app.API_KEYS['rdio']['key'],
