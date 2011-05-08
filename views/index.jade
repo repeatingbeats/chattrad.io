@@ -1,10 +1,14 @@
-#roomsection
+#roomsection.section
   form(action='/rooms', method='post')
-    #lastfm
-      #logo
-      #caption Room
-      #roomdesc Enter a Last.fm username to create a room.
+    .caphead
+      .caption Create a Room
+      #roomdesc Enter a Last.fm username to create a chattradio.io room.
       #roominput
         label#lfmname(for='lastfm') Username
         input#lfmuser(type='text', name='lastfm')
         input(type='submit', value='Create Room')
+
+#joinsection.section
+  form(action='/join', method='post')
+    .caphead
+      .caption Available Rooms

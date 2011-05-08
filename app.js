@@ -102,7 +102,7 @@ everyone.now.distributeMessage = function(message){
   console.log((user));
   // make sure we have an internal user and room
   if (!user || !user.room) return;
-  user.room.roomGroup.now.receiveMessage(user.nick, message);
+  user.room.roomGroup.now.receiveMessage(user.username, message);
 };
 
 // Get the models we'll need
@@ -133,9 +133,9 @@ everyone.now.join = function(roomName) {
     user = Users[this.user.clientId];
     if (user.room) user.room.removeUser(user);
   }
-  else { // jhawk we won't do this normally, we'll create the User onload
-    user = new User(this.now.name, this.user.clientId);
-    Users[this.user.clientId] = user;
+  else {
+    // If this user wasn't registered, register now
+    this.now.registerUser();
   }
 
   // jhawk temporary we give the room a song, we'll normally have this
@@ -152,6 +152,11 @@ everyone.now.join = function(roomName) {
   this.now.playAt(room.song.id, room.song.pos);
 }
 
+everyone.now.registerUser = function() {
+  user = new User(this.now.name, this.user.clientId);
+  Users[this.user.clientId] = user;
+}
+
 // A method for all users to report back where they are in a song
 everyone.now.updatePosition = function(pos){
 
@@ -160,7 +165,7 @@ everyone.now.updatePosition = function(pos){
 
   // if this user is further along than our last position, update
   // that position
-  if (pos > user.room.song.pos) {
+  if (user && pos > user.room.song.pos) {
     user.room.song.pos = pos;
   }
 };
