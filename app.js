@@ -58,7 +58,7 @@ app.configure('development', function() {
 });
 
 app.configure('production', function() {
-  app.set('domain', 'chattrad.io');
+  app.set('domain', 'www.chattrad.io');
   app.use(express.errorHandler());
   app.Rdio = require('./lib/rdio').Rdio({
     key: app.API_KEYS['rdio']['key'],
