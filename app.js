@@ -8,7 +8,8 @@ var DOTCLOUD_APP_PORT = 8080;
 app.API_KEYS = require('./config/api_keys');
 app.Rdio = require('./lib/rdio').Rdio({
   key: app.API_KEYS['rdio']['key'],
-  secret: app.API_KEYS['rdio']['secret']
+  secret: app.API_KEYS['rdio']['secret'],
+  cb: 'http://localhost:8080/login'
 });
 
 var LastFmNode = require('lastfm').LastFmNode;

@@ -39,11 +39,10 @@ $(document).ready(function(){
   }
 
   // jhawk temporary force the user to give us a name, use Rdio username
-  now.name = prompt("What's your name?", "");
+  //now.name = prompt("What's your name?", "");
 
   /* Receive a message */
   now.receiveMessage = function(name, message){
-    alert(message);
     $("#chat-log").append("<br>" + name + ": " + message);
   }
 
