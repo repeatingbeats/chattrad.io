@@ -131,7 +131,6 @@ everyone.now.join = function(roomName) {
   var user = null;
   if (!(this.user.clientId in Users)) {
     // If this user wasn't registered, register now
-    console.log('registering');
     this.now.registerUser();
   }
   user = Users[this.user.clientId];
