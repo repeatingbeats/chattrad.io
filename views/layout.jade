@@ -6,25 +6,27 @@ html
     script(type='text/javascript', src='/javascripts/jquery-1.4.4.min.js')
     script(type='text/javascript', src='/nowjs/now.js')
     script(type='text/javascript', src='/javascripts/client.js')
-  body.login
-    #header
-      h1 chattrad.io
-      #player
-        img#albumart(width=70, height=70)
-        #slider
-          .preslider
-            .sliderspot(style='width:15px;position:relative;')
-          .postslider
-          .innerslider
+  body
+    #container
+      #header
+        h1 chattrad.io
+        #player
+          img#albumart(width=70, height=70)
+          #slider
+            .preslider
+              .sliderspot(style='width:15px;position:relative;')
+            .postslider
+            .innerslider
 
-    #channel
-      #frame
-        #chat-log
+      #channel
+        #frame
+          #users
+          #chat-log
+          !=body
 
-        !=body
+      .clearfix
 
-      #users
-    #chatbox
-      form#entry
-        textarea#message(type='text', name='message', autocomplete='off')
+      #chatbox
+        form#entry
+          textarea#message(type='text', name='message', autocomplete='off')
 

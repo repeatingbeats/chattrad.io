@@ -10,116 +10,152 @@ html {
   height: 100%;
 
   body {
-    font-family: Helvetica, Arial, sans-serif;
-    border: 0;
     height: 100%;
     margin: 0;
-    min-height: 400px;
-    min-width: 650px;
     padding: 0;
-    width: 100%;
 
-    #header {
-      border: 2px solid orange;
-      height: 100px;
+    #container {
+      font-family: Helvetica, Arial, sans-serif;
+      border: 0;
+      height: 100%;
       margin: 0;
-      padding: 10px 20px;
-      z-index: 9999;
+      min-height: 400px;
+      min-width: 650px;
+      padding: 0;
+      position: relative;
+      width: 100%;
 
-      h1 {
-        float: left;
-        margin-top: 30px;
-      }
-
-      #player {
-        border: 2px solid purple;
-        float: right;
-        height: 70px;
-        margin-top: 10px;
-        padding: 0;
-        position: relative;
-        width: 66%;
+      #header {
+        border-bottom: 2px solid rgb(0,0,0);
+        height: 96px;
+        margin: 0;
+        padding: 10px 20px;
         z-index: 9999;
 
-        img#albumart {
-          border: 2px solid green;
+        h1 {
           float: left;
-          margin: 0;
+          margin-top: 30px;
+        }
+
+        #player {
+          float: right;
+          height: 70px;
+          margin-top: 10px;
           padding: 0;
           position: relative;
-        }
+          width: 66%;
+          z-index: 9999;
 
-        #slider {
-          background: rgb(20,20,20);
-          border: 2px solid red;
-          height: 10px;
-          margin-top: 30px;
-          margin-left: 80px;
-          margin-right: 10px;
-          position: relative;
-
-          .preslider {
-            background-color: rgb(229,0,167);
-            height: 10px;
+          img#albumart {
+            background-color: rgb(0,0,0);
+            float: left;
+            margin: 0;
+            padding: 0;
             position: relative;
-            width: 50%;
+          }
 
-            .sliderspot {
-              border: 2px solid blue;
-              background-color: rgb(0,167,229);
-              float: right;
-              height: 15px;
+          #slider {
+            background: rgb(20,20,20);
+            height: 10px;
+            margin-top: 30px;
+            margin-left: 80px;
+            margin-right: 10px;
+            position: relative;
+
+            .preslider {
+              background-color: rgb(229,0,167);
+              height: 10px;
+              position: relative;
+              width: 50%;
+
+              .sliderspot {
+                background-color: rgb(0,167,229);
+                float: right;
+                height: 15px;
+                margin-top: -0.16em;
+              }
+            }
+
+            .innerslider {
+              height: 10px;
+              margin-top: -10px;
+              position: relative;
+              width: 100%;
             }
           }
+        }
+      }
 
-          .innerslider {
-            border: 2px solid red;
-            height: 10px;
-            margin-top: -10px;
+      #channel {
+        height: 100%;
+        margin: 0;
+        position: relative;
+        width: 100%;
+
+        #frame {
+          height: 100%;
+          position: relative;
+
+          #users,
+          #chat-log {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-x: auto;
             position: relative;
-            width: 100%;
+          }
+
+          #users {
+            border-right: 1px solid rgb(0,0,0);
+            float: left;
+            height: 100%;
+            width: 200px;
+          }
+
+          #chat-log {
+            float: left;
+            margin-left: 220px;
+            position: absolute;
+
+            #backlog {
+              width: 100%;
+            }
           }
         }
       }
-    }
 
-    #channel {
-      #frame {
-        #chat-log {
-        }
+      .clearfix {
+        clear: both;
+        margin-top: 50px;
       }
 
-      #users {
-      }
-    }
-
-    #chatbox {
-      border: 2px solid red;
-      bottom: 0;
-      height: 50px;
-      margin: 0;
-      min-width: 650px;
-      padding-top: 10px;
-      position: fixed;
-      vertical-align: 'baseline';
-      width: 100%;
-      z-index: 9999;
-
-      #entry {
-        margin: 0 10px;
-        padding-left: 10px;
-        padding-right: 10px;
+      #chatbox {
+        bottom: 0;
+        height: 50px;
+        margin: 0 auto;
+        min-width: 650px;
+        position: fixed;
         width: 100%;
+        z-index: 9999;
 
-        #message {
-          font: normal 14px;
-          margin: 0 auto;
-          overflow: hidden;
-          padding: 5px;
-          resize: none;
-          white-space: pre-wrap;
-          width: 90%;
-          word-wrap: break-word;
+        #entry {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+
+          #message {
+            font: normal 14px;
+            font-size: 16px;
+            height: 50px;
+            margin: 0;
+            overflow: hidden;
+            padding: 2px;
+            resize: none;
+            white-space: pre-wrap;
+            width: 100%;
+            word-wrap: break-word;
+          }
         }
       }
     }
