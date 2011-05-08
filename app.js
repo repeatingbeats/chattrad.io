@@ -17,6 +17,9 @@ app.lastfm = new LastFmNode({
   secret: app.API_KEYS['lastfm']['secret']
 });
 
+app.echonest = require('./lib/echonestjs/echonest');
+app.echonest.api_key = app.API_KEYS['echonest']['key'];
+
 app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
