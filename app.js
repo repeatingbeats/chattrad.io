@@ -95,9 +95,13 @@ everyone.disconnected(function(){
   console.log("Left: " + this.now.name);
 });
 
+var check = require('validator').check,
+    sanitize = require('validator').sanitize
 everyone.now.distributeMessage = function(message){
   var user = Users[this.user.clientId];
 
+  message = sanitize(message).trim();
+  message = sanitize(message).xss();
   console.log(message);
   console.log((user));
   // make sure we have an internal user and room
