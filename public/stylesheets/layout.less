@@ -184,7 +184,7 @@ html {
         border: 1px solid rgb(100,105,121);
         margin: 120px auto;
         padding-bottom: 90px;
-        width: 200px;
+        width: 400px;
         .border-radius(5px);
         .box-shadow(0,0,20px,#f8f8f8);
 
@@ -206,6 +206,7 @@ html {
             background: url('/images/lastfm.png') no-repeat 0 -160px;
             float: left;
             height: 50px;
+            margin-left: 200px;
             width: 100px;
             z-index: 5;
           }
@@ -223,20 +224,34 @@ html {
           }
         }
 
+        #roomdesc {
+          float: left;
+          font-size: 12px;
+          margin: 10px;
+          width: 40%;
+        }
+
+        #roominput {
+          float: right;
+          width: 50px;
+        }
+
         label#lfmname {
           margin-top: 5px;
+          text-align: right;
         }
 
         label#lfmname,
         input#lfmuser {
+          float: right;
           margin: 2px 35px;
           width: 122px;
         }
 
         input[type='submit'] {
           float: right;
-          margin-top: 40px;
-          margin-right: 30px;
+          margin-top: 15px;
+          margin-right: 35px;
         }
       }
     } /* end container */
