@@ -86,6 +86,13 @@ Chattradio.RdioListener = {
     Chattradio.rdioswf = $('#rdioswf').get(0);
     // uncomment this to test hard-coded playback
     Chattradio.rdioswf.rdio_play("t7349349");
+    $.getJSON('/info', function (data) {
+      console.log('kurt');
+      var track = data.result.t7349349;
+      console.log(track);
+      $('#artistinfo').html(track.artist + ' - ' + track.name);
+      $('#albumart').attr('src', track.icon);
+    });
   },
 
   playStateChanged: function (state) {
@@ -109,6 +116,7 @@ Chattradio.RdioListener = {
   },
 
   positionChanged: function (position) {
+    $('.preslider').css('width', position + '%');
     console.log('positionChanged: ' + position);
   },
 
