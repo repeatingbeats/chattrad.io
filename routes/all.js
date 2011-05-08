@@ -86,6 +86,19 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/info', function(req, res) {
+    app.Rdio.request(function(error) {
+      console.log("ERRORINFO");
+    },
+    { method: 'get',
+      keys: 't7349349',
+      token: req.session.oauth_access_token,
+      token_secret: req.session.oauth_access_token_secret },
+      function(data) {
+        res.send(data);
+      });
+  });
+
   app.get('/verify', function(req, res) {
     app.Rdio.accessToken(function(err) {
                            console.log('rdio access token gone bad. ' + err);
