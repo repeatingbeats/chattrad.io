@@ -6,11 +6,6 @@ var express = require('express'),
 var DOTCLOUD_APP_PORT = 8080;
 
 app.API_KEYS = require('./config/api_keys');
-app.Rdio = require('./lib/rdio').Rdio({
-  key: app.API_KEYS['rdio']['key'],
-  secret: app.API_KEYS['rdio']['secret'],
-  cb: 'http://localhost:8080/verify'
-});
 
 var LastFmNode = require('lastfm').LastFmNode;
 app.lastfm = new LastFmNode({
@@ -41,6 +36,11 @@ app.configure('test', function() {
     dumpExceptions: true,
     showStack: true
   }));
+  app.Rdio = require('./lib/rdio').Rdio({
+    key: app.API_KEYS['rdio']['key'],
+    secret: app.API_KEYS['rdio']['secret'],
+    cb: 'http://localhost:8080/verify'
+  });
 });
 
 app.configure('development', function() {
@@ -48,10 +48,20 @@ app.configure('development', function() {
     dumpExceptions: true,
     showStack: true
   }));
+  app.Rdio = require('./lib/rdio').Rdio({
+    key: app.API_KEYS['rdio']['key'],
+    secret: app.API_KEYS['rdio']['secret'],
+    cb: 'http://localhost:8080/verify'
+  });
 });
 
 app.configure('production', function() {
   app.use(express.errorHandler());
+  app.Rdio = require('./lib/rdio').Rdio({
+    key: app.API_KEYS['rdio']['key'],
+    secret: app.API_KEYS['rdio']['secret'],
+    cb: 'http://www.chattrad.io/verify'
+  });
 });
 
 if (!module.parent) {
