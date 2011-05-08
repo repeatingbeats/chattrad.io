@@ -24,7 +24,7 @@ module.exports = function(app) {
     var room = req.params.id;
     if (app.Rooms[room]) {
       app.Rdio.request(function (err) {
-        res.send(JSON.stringify({ 'oops': err.data }));
+        res.send(JSON.stringify({ 'oops, room-fail': err.data }));
       }, {
         method: 'currentUser',
         token: req.session.oauth_access_token,

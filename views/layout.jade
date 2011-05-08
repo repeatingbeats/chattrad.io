@@ -6,7 +6,6 @@ html
     script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js')
     script(type='text/javascript', src='/javascripts/jquery-1.4.4.min.js')
     script(type='text/javascript', src='/nowjs/now.js')
-    script(type='text/javascript', src='/javascripts/client.js')
   body
     #rdioswf
     #container
@@ -14,6 +13,11 @@ html
         a#banner(href='/')
         #player
           img#albumart(width=70, height=70)
+          #artisttitle
+            span#artist.topinfo kurt
+            span#separator \  :\ 
+            span#songtitle.topinfo something
+          span#duration 0:00 / 0:00
           #slider
             .preslider
               .sliderspot(style='width:15px;position:relative;')
