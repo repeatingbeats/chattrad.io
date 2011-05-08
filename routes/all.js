@@ -100,6 +100,10 @@ module.exports = function(app) {
       });
   });
 
+  app.get('/promo', function(req, res) {
+    res.render('gohere');
+  });
+
   app.get('/verify', function(req, res) {
     app.Rdio.accessToken(function(err) {
                            console.log('rdio access token gone bad. ' + err);
