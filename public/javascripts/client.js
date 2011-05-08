@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-  now.name = DataTransfer.username;
+ // now.name = DataTransfer.username;
 
   /* Rdio Flash player setup */
   $.getJSON('/flashvars', function (data) {
@@ -93,7 +93,7 @@ Chattradio.RdioListener = {
     console.log('rdio ready');
     Chattradio.rdioswf = $('#rdioswf').get(0);
     // uncomment this to test hard-coded playback
-    // Chattradio.rdioswf.rdio_play("t7349349");
+    Chattradio.rdioswf.rdio_play("t7349349");
   },
 
   playStateChanged: function (state) {
