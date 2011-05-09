@@ -22,6 +22,7 @@ module.exports = function(app) {
 
   app.get('/rooms/:id', function (req, res) {
     var room = req.params.id;
+
     if (app.Rooms[room]) {
       app.Rdio.request(function (err) {
         res.send(JSON.stringify({ 'oops, room-fail': err.data }));

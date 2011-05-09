@@ -147,11 +147,25 @@ everyone.now.join = function(roomName) {
 
   // Add the user to our room and nowjs group
   room.addUser(user);
+  this.now.broadcastJoin();
 
   // Start the user at the correct position in the playing song.
   // We might need to be more advanced about this if it's too easy for
   // things to desynchronize.
   this.now.playAt(room.song.id, room.song.pos);
+}
+
+/**
+ * \brief Broadcast user has joined room
+ */
+everyone.now.broadcastJoin = function() {
+  everyone.now.receiveJoin(this.now.name);
+}
+
+everyone.now.updateUsers = function() {
+  Users.forEach(function(user) {
+    console.log(user);
+  });
 }
 
 everyone.now.registerUser = function() {
