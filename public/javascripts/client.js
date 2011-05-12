@@ -66,7 +66,12 @@ $(document).ready(function(){
 
   /* Receive a message */
   now.receiveMessage = function(name, message){
-    $("#chat-log").append("<br>" + name + ": " + message);
+    var chatlog = $('#chat-log'),
+        scrollHeight;
+
+    chatlog.append("<br>" + name + ": " + message);
+    scrollHeight = $("#chat-log").attr("scrollHeight");
+    $("#chat-log").attr("scrollTop", scrollHeight);
   }
 
   /* Play a song at a position */
