@@ -61,7 +61,12 @@ $(document).ready(function(){
   }
 
   now.receiveJoin = function(name) {
-    $('#chat-log').append('<br>' + name + ' joined.');
+    var chatlog = $('#chat-log'),
+        scrollHeight;
+
+    chatlog.append('<br>' + name + ' joined.');
+    scrollHeight = chatlog.attr("scrollHeight");
+    chatlog.attr("scrollTop", scrollHeight);
   }
 
   /* Receive a message */
@@ -70,8 +75,8 @@ $(document).ready(function(){
         scrollHeight;
 
     chatlog.append("<br>" + name + ": " + message);
-    scrollHeight = $("#chat-log").attr("scrollHeight");
-    $("#chat-log").attr("scrollTop", scrollHeight);
+    scrollHeight = chatlog.attr("scrollHeight");
+    chatlog.attr("scrollTop", scrollHeight);
   }
 
   /* Play a song at a position */
