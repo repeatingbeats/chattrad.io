@@ -140,19 +140,16 @@ everyone.now.join = function(roomName) {
   user = Users[this.user.clientId];
   if (user.room) user.room.removeUser(user);
 
-  // jhawk temporary we give the room a song, we'll normally have this
-  if (!room.song) {
-    room.song = new Song("999");
-  }
-
   // Add the user to our room and nowjs group
   room.addUser(user);
   this.now.broadcastJoin();
 
   // Start the user at the correct position in the playing song.
-  // We might need to be more advanced about this if it's too easy for
-  // things to desynchronize.
-  this.now.playAt(room.song.id, room.song.pos);
+  // xxx slloyd Song position needs a magic number to incorporate delays:
+  //            - client -> server transit for last reported pos
+  //            - server -> client transit for playAt call
+  //            - rdio flash player buffer/seek time
+  this.now.playAt(room.station.song.id, room.station.song.pos + 3);
 }
 
 /**
@@ -181,7 +178,22 @@ everyone.now.updatePosition = function(pos){
 
   // if this user is further along than our last position, update
   // that position
-  if (user && pos > user.room.song.pos) {
-    user.room.song.pos = pos;
+  if (user && pos > user.room.station.song.pos) {
+    user.room.station.song.pos = pos;
   }
 };
+
+// Clients report when they complete track playback
+everyone.now.trackFinished = function(trackId) {
+
+  var user = Users[this.user.clientId],
+      station = user.room.station;
+
+  // Ensure that we only call station.next() once
+  if (trackId == station.song.id) {
+    station.next(function (err, song) {
+      everyone.now.playAt(song.id, 0);
+    });
+  }
+}
+

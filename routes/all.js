@@ -47,7 +47,9 @@ module.exports = function(app) {
       if (err) {
         res.send(err.message);
       } else {
-        res.send(station._status);
+        station.next(function (err, id) {
+          res.send(id);
+        });
       }
     });
   });
@@ -56,18 +58,23 @@ module.exports = function(app) {
     var username = req.param('lastfm');
     console.log('posting username:' + username);
     station.getStationForUser(username, function(err, station) {
-      var room
+
+      if (err) {
+        return res.send(err.message);
+      }
+
+      var room;
       if (username in app.Rooms) {
         room = app.Rooms[username];
+        res.redirect('/rooms/' + username);
       } else {
         room = new app.Room(username);
-      }
-      app.Rooms[username] = room;
-      room.station = station;
-      if (err) {
-        res.send(err.message);
-      } else {
-        res.redirect('/rooms/' + username);
+        app.Rooms[username] = room;
+        room.station = station;
+        station.next(function (err, id) {
+          if (err) return res.send(err.message);
+          res.redirect('/rooms/' + username);
+        });
       }
     });
   });
@@ -88,16 +95,17 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/info', function(req, res) {
+  app.get('/info/:id', function(req, res) {
+    var key = req.params.id;
     app.Rdio.request(function(error) {
       console.log("ERRORINFO");
     },
     { method: 'get',
-      keys: 't7349349',
+      keys: key,
       token: req.session.oauth_access_token,
       token_secret: req.session.oauth_access_token_secret },
       function(data) {
-        res.send(data);
+        res.send(JSON.stringify(data));
       });
   });
 

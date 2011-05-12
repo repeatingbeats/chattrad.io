@@ -15,15 +15,6 @@ $(document).ready(function(){
                        attributes);
   });
 
-  /* Inform the server of our position in the song periodically */
-  var songPlaying = false;
-  setInterval(function() {
-    if (songPlaying) { // jhawk temp hack
-      var pos = this.getPosition();
-      now.updatePosition(pos);
-    }
-  }, 5000);
-
   /* Join a room */
   $("#join-channel").keydown(function(e){
     now.registerUser();
@@ -36,7 +27,6 @@ $(document).ready(function(){
     e.preventDefault();
 
     now.join(roomName);
-    songPlaying = true;
     $("#join-channel").val("");
   });
 
@@ -72,10 +62,29 @@ $(document).ready(function(){
   /* Play a song at a position */
   now.playAt = function(id, pos){
 
+    function waitForReady() {
+      if (Chattradio.RdioListener.isReady) {
+        Chattradio.rdioswf.rdio_play(id);
+        if (pos > 0) {
+          // Seek won't work until playback starts :(
+          // Set a flag so we seek if necessary on the state change
+          Chattradio.seekTo = pos;
+        }
+        $.getJSON('/info/' + id, function (data) {
+          Chattradio.track = data.result[id];
+          $('#artistinfo').html(Chattradio.track.artist + ' - ' + Chattradio.track.name);
+          $('#albumart').attr('src', Chattradio.track.icon);
+        });
+      } else {
+        setTimeout(function () { waitForReady() }, 500);
+      }
+    }
+
+    waitForReady();
+
   }
 
   now.pause = function() {
-
   }
 
 });
@@ -84,26 +93,33 @@ var Chattradio = Chattradio || {};
 
 Chattradio.rdioswf = null;
 Chattradio.track = null;
+Chattradio.seekTo = null;
 
 Chattradio.RdioListener = {
 
+  isReady: false,
+
   ready: function() {
     Chattradio.rdioswf = $('#rdioswf').get(0);
-    // uncomment this to test hard-coded playback
-    Chattradio.rdioswf.rdio_play("t7349349");
-    $.getJSON('/info', function (data) {
-      Chattradio.track = data.result.t7349349;
-      $('#artistinfo').html(Chattradio.track.artist + ' - ' + Chattradio.track.name);
-      $('#albumart').attr('src', Chattradio.track.icon);
-    });
+    this.isReady = true;
+    console.log('ready');
   },
 
   playStateChanged: function (state) {
     console.log('playStateChanged: ' + state);
+    if (Chattradio.seekTo && state == 3) {
+      console.log('seeking to ' + Chattradio.seekTo);
+      Chattradio.rdioswf.rdio_seek(Chattradio.seekTo);
+      Chattradio.seekTo = null;
+    }
   },
 
   playingTrackChanged: function (track, pos) {
     console.log('playingTrackChanged: ' + track + ', pos: ' + pos);
+    // pos == -1 means we got to the end of the current track
+    if (pos == -1) {
+      now.trackFinished(Chattradio.track.key);
+    }
   },
 
   playingSourceChanged: function (source) {
@@ -123,6 +139,7 @@ Chattradio.RdioListener = {
 
     var percent = position / Math.floor(Chattradio.track.duration) * 100;
     $('.preslider').css('width', percent + '%');
+    now.updatePosition(position);
   },
 
   shuffleChanged: function (shuffle) {
