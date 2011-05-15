@@ -15,19 +15,18 @@ $(document).ready(function(){
                        attributes);
   });
 
-  /* Join a room */
-  $("#join-channel").keydown(function(e){
-    now.registerUser();
-    var code = (e.keyCode) ? e.keyCode : e.which,
-        roomName = $("#join-channel").val();
+  /* Join a room via landing */
+  $("#newroomform").submit(function(e){
 
-    if (!roomName || roomName.length < 1 || code !== 13) {
-      return;
+    var lfmUser = $("#lfmuser").val();
+    if (!lfmUser || lfmUser.length < 1) {
+      e.preventDefault();
+      alert('You must specify a valid Last.fm username to create a room');
+      return false;
     }
-    e.preventDefault();
 
-    now.join(roomName);
-    $("#join-channel").val("");
+    $("#spinner").removeAttr("invisible");
+
   });
 
   /* Send a message */
