@@ -142,7 +142,6 @@ everyone.now.join = function(roomName) {
 
   // Add the user to our room and nowjs group
   room.addUser(user);
-  this.now.broadcastJoin();
 
   // Start the user at the correct position in the playing song.
   // xxx slloyd Song position needs a magic number to incorporate delays:
@@ -150,13 +149,6 @@ everyone.now.join = function(roomName) {
   //            - server -> client transit for playAt call
   //            - rdio flash player buffer/seek time
   this.now.playAt(room.station.song.id, room.station.song.pos + 3);
-}
-
-/**
- * \brief Broadcast user has joined room
- */
-everyone.now.broadcastJoin = function() {
-  everyone.now.receiveJoin(this.now.name);
 }
 
 everyone.now.updateUsers = function() {
@@ -192,7 +184,7 @@ everyone.now.trackFinished = function(trackId) {
   // Ensure that we only call station.next() once
   if (trackId == station.song.id) {
     station.next(function (err, song) {
-      everyone.now.playAt(song.id, 0);
+      user.room.roomGroup.now.playAt(song.id, 0);
     });
   }
 }

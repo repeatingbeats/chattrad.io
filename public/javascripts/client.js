@@ -59,6 +59,15 @@ $(document).ready(function(){
     chatlog.attr("scrollTop", scrollHeight);
   }
 
+  now.receivePart = function(name) {
+    var chatlog = $('#chat-log'),
+        scrollHeight;
+
+    chatlog.append('<br>' + name + ' left.');
+    scrollHeight = chatlog.attr("scrollHeight");
+    chatlog.attr("scrollTop", scrollHeight);
+  }
+
   /* Receive a message */
   now.receiveMessage = function(name, message){
     var chatlog = $('#chat-log'),
