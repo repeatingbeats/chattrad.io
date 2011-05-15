@@ -9,7 +9,7 @@ script(type='text/javascript', src='/javascripts/client.js')
         #roomnameinput
           img#spinner(src='images/throb_spinner.gif', invisible='true')
           input#lfmuser(type='text', name='lastfm')
-        input(type='submit', value='Create Room')
+        input#newroomsubmit(type='submit', value='Create Room')
 
 #joinsection.section
   form#joinroomform(action='/join', method='post')

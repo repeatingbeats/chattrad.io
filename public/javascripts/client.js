@@ -27,6 +27,8 @@ $(document).ready(function(){
 
     $("#spinner").removeAttr("invisible");
 
+    $("#newroomsubmit").attr("disabled", "true");
+    $("#availrooms").click(function(e) { e.preventDefault() } );
   });
 
   /* Send a message */
