@@ -6,19 +6,27 @@ html
     script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js')
     script(type='text/javascript', src='/javascripts/jquery-1.4.4.min.js')
     script(type='text/javascript', src='/nowjs/now.js')
+    script(type='text/javascript', src='/javascripts/player.js')
   body
     #rdioswf
     #container
       #header
         a#banner(href='/')
         #player
-          img#albumart(width=70, height=70)
+          img#albumart(width=80, height=80)
           #artisttitle
             span#artistinfo
           span#duration(hidden=true) 0:00 / 0:00
           #slider
-            .preslider
-              .sliderspot(style='width:15px;position:relative;')
+            #seek.preslider
+              #seekspot.sliderspot(style='width:15px;position:relative;')
             .postslider
-            .innerslider
+            #seekfill.innerslider
+          #volbox
+            button#volbtn
+            #volume
+              #volctl.preslider
+                #volspot.sliderspot(style='width:12px;position:relative;')
+              .postslider
+              #volfill.innerslider
       !=body
