@@ -74,11 +74,15 @@ $(document).ready(function(){
 
     function waitForReady() {
       if (Chattradio.RdioListener.isReady) {
-        var volume = sessionStorage.getItem('volume').replace(/%/g, '');
+        var volume = sessionStorage.getItem('volume');
 
-        // Init swf player volume
-        Chattradio.rdioswf.rdio_setMute(Boolean(sessionStorage.getItem('mute')));
-        Chattradio.rdioswf.rdio_setVolume(parseInt(volume) / 100);
+        if (volume) {
+          volume = volume.replace(/%/g, '');
+
+          // Init swf player volume
+          Chattradio.rdioswf.rdio_setMute(Boolean(sessionStorage.getItem('mute')));
+          Chattradio.rdioswf.rdio_setVolume(parseInt(volume) / 100);
+        }
 
         Chattradio.rdioswf.rdio_play(id);
         if (pos > 0) {
