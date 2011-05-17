@@ -59,7 +59,7 @@ html {
       width: 100%;
 
       #header {
-        .background-gradient(top, rgb(234,227,241), rgb(181,220,247));
+        /*.background-gradient(top, rgb(234,227,241), rgb(181,220,247));*/
         border-bottom: 2px solid rgb(200,227,255);
         height: 96px;
         margin: 0;
@@ -91,6 +91,7 @@ html {
             margin: 0;
             padding: 0;
             position: relative;
+            .unselectable();
           }
 
           #slider {
@@ -98,32 +99,75 @@ html {
             .border-radius(4px);
             height: 10px;
             margin-top: 25px;
-            margin-left: 80px;
+            margin-left: 100px;
             margin-right: 10px;
             position: relative;
 
-            .preslider {
-              background-color: rgb(255,80,67);
+            #seek {
               .border-radius(10px);
               height: 10px;
               position: relative;
               width: 0%;
-
-              .sliderspot {
-                background-color: rgb(0,167,229);
-                .border-radius(10px);
-                float: right;
-                height: 15px;
-                left: 10px;
-                margin-top: -0.2em;
-              }
             }
 
-            .innerslider {
+            #seekfill {
               height: 10px;
               margin-top: -10px;
               position: relative;
               width: 100%;
+            }
+
+            #seekspot {
+              .border-radius(10px);
+              height: 15px;
+              left: 10px;
+              margin-top: -0.2em;
+            }
+          }
+
+          #volbox {
+            margin-left: 20px;
+            margin-top: 25px;
+
+            #volbtn {
+              background: transparent url('/images/volume.png') no-repeat;
+              border: none;
+              float: left;
+              height: 32px;
+              margin-left: 10px;
+              margin-top: -8px;
+              width: 32px;
+            }
+
+            #volume {
+              background: rgb(100,100,100);
+              .border-radius(4px);
+              cursor: pointer;
+              float: left;
+              height: 8px;
+              position: relative;
+              width: 75px;
+
+              #volctl {
+                .border-radius(8px);
+                height: 8px;
+                position: relative;
+                width: 50%;
+              }
+
+              #volfill {
+                height: 8px;
+                margin-top: -8px;
+                position: relative;
+                width: 100%;
+              }
+
+              #volspot {
+                .border-radius(8px);
+                height: 12px;
+                left: 8px;
+                margin-top: -0.15em;
+              }
             }
           }
         }
@@ -208,7 +252,7 @@ html {
         width: 400px;
 
         #rdiohead {
-          .background-gradient(top, rgb(234,227,241), rgb(131,220,247));
+          /*.background-gradient(top, rgb(234,227,241), rgb(131,220,247));*/
           .border-radius-top(5px);
           border-bottom: 2px solid rgb(40,80,150);
           font-size: 20px;
@@ -283,7 +327,7 @@ html {
 }
 
 .caphead {
-  .background-gradient(top, rgb(234,227,241), rgb(131,220,247));
+  /*.background-gradient(top, rgb(234,227,241), rgb(131,220,247));*/
   .border-radius-top(5px);
   border-bottom: 2px solid rgb(200,227,255);
   height: 40px;
@@ -326,10 +370,26 @@ span#duration {
   margin-top: 28px;
 }
 
+.preslider {
+  background-color: rgb(255,80,67);
+
+  .sliderspot {
+    background-color: rgb(0,167,229);
+    float: right;
+  }
+}
+
+.innerslider {
+}
+
 .room {
   font-size: 14px;
   float: right;
   margin-right: 20px;
+}
+
+.dragging {
+  cursor: pointer;
 }
 
 .background-gradient (@point, @start, @stop) {
@@ -365,4 +425,12 @@ span#duration {
   box-shadow: @offsetx @offsety @blurr @color;
   -moz-box-shadow: @offsetx @offsety @blurr @color;
   -webkit-box-shadow: @offsetx @offsety @blurr @color;
+}
+
+.unselectable () {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
