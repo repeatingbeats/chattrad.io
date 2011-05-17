@@ -93,6 +93,10 @@ everyone.connected(function(){
 
 everyone.disconnected(function(){
   console.log("Left: " + this.now.name);
+  user = Users[this.user.clientId];
+  if (user.room) user.room.removeUser(user);
+
+  Users[this.user.clientId] = null;
 });
 
 var check = require('validator').check,

@@ -1,15 +1,18 @@
+script(type='text/javascript', src='/javascripts/client.js')
 #roomsection.section
-  form(action='/rooms', method='post')
+  form#newroomform(action='/rooms', method='post')
     .caphead
       .caption Create a Room
       #roomdesc Enter a Last.fm username to create a chattrad.io room.
       #roominput
         label#lfmname(for='lastfm') Username
-        input#lfmuser(type='text', name='lastfm')
-        input(type='submit', value='Create Room')
+        #roomnameinput
+          img#spinner(src='images/throb_spinner.gif', invisible='true')
+          input#lfmuser(type='text', name='lastfm')
+        input#newroomsubmit(type='submit', value='Create Room')
 
 #joinsection.section
-  form(action='/join', method='post')
+  form#joinroomform(action='/join', method='post')
     .caphead
       .caption Available Rooms
       #availrooms
