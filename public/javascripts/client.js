@@ -83,6 +83,16 @@ $(document).ready(function(){
 
     function waitForReady() {
       if (Chattradio.RdioListener.isReady) {
+        var volume = sessionStorage.getItem('volume');
+
+        if (volume) {
+          volume = volume.replace(/%/g, '');
+
+          // Init swf player volume
+          Chattradio.rdioswf.rdio_setMute(Boolean(sessionStorage.getItem('mute')));
+          Chattradio.rdioswf.rdio_setVolume(parseInt(volume) / 100);
+        }
+
         Chattradio.rdioswf.rdio_play(id);
         if (pos > 0) {
           // Seek won't work until playback starts :(
@@ -157,7 +167,7 @@ Chattradio.RdioListener = {
     if (position <= 0) { return; }
 
     var percent = position / Math.floor(Chattradio.track.duration) * 100;
-    $('.preslider').css('width', percent + '%');
+    $('#seek').css('width', percent + '%');
     now.updatePosition(position);
   },
 
