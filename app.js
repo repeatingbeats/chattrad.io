@@ -1,7 +1,11 @@
-
 var express = require('express'),
     jade = require('jade'),
     app = module.exports = express.createServer();
+
+// Models
+var room = require('./lib/room.js'),
+    user = require('./lib/user.js'),
+    song = require('./lib/song.js');
 
 var DOTCLOUD_APP_PORT = 8080;
 
@@ -88,107 +92,83 @@ STATUS = {
 everyone.now.STATUS = STATUS;
 
 everyone.connected(function(){
-  console.log("Joined: " + this.now.name);
+  //console.log("Joined: " + this.now.name);
 });
 
 everyone.disconnected(function(){
-  console.log("Left: " + this.now.name);
-  user = Users[this.user.clientId];
-  if (user.room) user.room.removeUser(user);
-
-  Users[this.user.clientId] = null;
+  //console.log("Left: " + this.now.name);
 });
 
 var check = require('validator').check,
     sanitize = require('validator').sanitize
-everyone.now.distributeMessage = function(message){
-  var user = Users[this.user.clientId];
+
+everyone.now.distributeMessage = function(message) {
+  var currUser = user.getUser(this.user.clientId),
+      currRoom = room.getRoom(this.now.room);
 
   message = sanitize(message).trim();
   message = sanitize(message).xss();
-  console.log(message);
-  console.log((user));
-  // make sure we have an internal user and room
-  if (!user || !user.room) return;
-  user.room.roomGroup.now.receiveMessage(user.username, message);
+  console.log(currUser.username + ' - ' + message);
+
+  currRoom.roomGroup.now.receiveMessage(currUser.username, message);
 };
 
-// Get the models we'll need
-require('./lib/room.js');
-require('./lib/user.js');
-require('./lib/song.js');
-
-// Maps of all Rooms and Users
-app.Rooms = Rooms = {};
-app.Users = Users = {};
-app.Room = Room;
-
 /* A join method for every client */
-everyone.now.join = function(roomName) {
-  // See if the room already exists, if not create it
-  var room = null;
-  if (roomName in Rooms) {
-    room = Rooms[roomName];
-  }
-  else {
-    room = new Room(roomName);
-    Rooms[roomName] = room;
-  }
+everyone.now.join = function(roomname) {
+  var currRoom = room.getRoom(roomname),
+      currUser = user.getUser(this.user.clientId);
 
-  // Find our internal User object for the user
-  var user = null;
-  if (!(this.user.clientId in Users)) {
-    // If this user wasn't registered, register now
-    this.now.registerUser();
-  }
-  user = Users[this.user.clientId];
-  if (user.room) user.room.removeUser(user);
+  this.now.room = roomname;
+
+  currUser.username = this.now.name;
 
   // Add the user to our room and nowjs group
-  room.addUser(user);
+  currRoom.addUser(currUser);
 
   // Start the user at the correct position in the playing song.
   // xxx slloyd Song position needs a magic number to incorporate delays:
   //            - client -> server transit for last reported pos
   //            - server -> client transit for playAt call
   //            - rdio flash player buffer/seek time
-  this.now.playAt(room.station.song.id, room.station.song.pos + 3);
+  this.now.playAt(currRoom.station.song.id, currRoom.station.song.pos + 3);
 }
 
-everyone.now.updateUsers = function() {
-  Users.forEach(function(user) {
-    console.log(user);
-  });
-}
+everyone.now.leave = function(roomname) {
+  var currRoom = room.getRoom(roomname),
+      currUser = user.getUser(this.user.clientId);
 
-everyone.now.registerUser = function() {
-  user = new User(this.now.name, this.user.clientId);
-  Users[this.user.clientId] = user;
+  // XXX - https://github.com/Flotype/now/issues/37
+  //   TypeError: Cannot read property '0' of null
+  // Should be fixed in a later version, although I'm not convinced 6.0 is
+  // stable.
+  this.now.room = null;
+
+  // Remove the user from the room and nowjs group
+  currRoom.removeUser(currUser);
 }
 
 // A method for all users to report back where they are in a song
-everyone.now.updatePosition = function(pos){
-
-  // get the internal User object
-  var user = Users[this.user.clientId];
+everyone.now.updatePosition = function(pos) {
+  var currUser = user.getUser(this.user.clientId),
+      currRoom = room.getRoom(this.now.room);
 
   // if this user is further along than our last position, update
   // that position
-  if (user && pos > user.room.station.song.pos) {
-    user.room.station.song.pos = pos;
+  if (currUser && pos > currRoom.station.song.pos) {
+    currRoom.station.song.pos = pos;
   }
 };
 
 // Clients report when they complete track playback
 everyone.now.trackFinished = function(trackId) {
-
-  var user = Users[this.user.clientId],
-      station = user.room.station;
+  var currUser = user.getUser(this.user.clientId),
+      currRoom = room.getRoom(this.now.room),
+      currStation = currRoom.station;
 
   // Ensure that we only call station.next() once
-  if (trackId == station.song.id) {
-    station.next(function (err, song) {
-      user.room.roomGroup.now.playAt(song.id, 0);
+  if (trackId == currStation.song.id) {
+    currStation.next(function (err, song) {
+      everyone.now.playAt(song.id, 0);
     });
   }
 }

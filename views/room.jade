@@ -1,19 +1,21 @@
 script(type='text/javascript)
-  DataTransfer = {
-    username: '#{username}'
-  };
   $(document).ready(function(){
+    now.name = '#{username}';
+
     now.ready(function() {
-      now.join('#{roomName}');
+      now.join('#{roomname}');
     });
-    now.name = '#{username}'
+  });
+
+  $(window).unload(function() {
+    now.leave('#{roomname}');
   });
 
 #channel
   #frame
     #users
     #chat-log
-      <span>Welcome to #{roomName}'s channel </span>
+      <span>Welcome to #{roomname}'s channel </span>
 
 #chatbox
   form#entry

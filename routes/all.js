@@ -1,4 +1,5 @@
 var user = require('./../lib/user'),
+    room = require('./../lib/room'),
     station = require('./../lib/station');
 
 module.exports = function(app) {
@@ -21,10 +22,9 @@ module.exports = function(app) {
   });
 
   app.get('/rooms/:id', function (req, res) {
-    var room = req.params.id;
-
-    if (app.Rooms[room]) {
-      app.Rdio.request(function (err) {
+    var currRoom = room.getRoom(req.params.id);
+    if (currRoom) {
+      app.Rdio.request(function(err) {
         res.send(JSON.stringify({ 'oops, room-fail': err.data }));
       }, {
         method: 'currentUser',
@@ -32,8 +32,8 @@ module.exports = function(app) {
         token_secret: req.session.oauth_access_token_secret ,
       }, function (data) {
         var userUrl = data.result.url.split('/');
-        res.render('room', {username: userUrl[userUrl.length -2],
-                            roomName: room});
+        res.render('room', { username: userUrl[userUrl.length -2],
+                             roomname: currRoom.name });
       });
     } else {
       // create a room?
@@ -41,41 +41,26 @@ module.exports = function(app) {
     }
   });
 
-  // temporary test route
-  app.get('/lfm/:id', function (req, res) {
-    station.getStationForUser(req.params.id, function(err, station) {
-      if (err) {
-        res.send(err.message);
-      } else {
-        station.next(function (err, id) {
-          res.send(id);
-        });
-      }
-    });
-  });
-
   app.post('/rooms', function (req, res) {
     var username = req.param('lastfm');
     console.log('posting username:' + username);
-    station.getStationForUser(username, function(err, station) {
+    station.getStationForUser(username, function(err, currStation) {
+      var currRoom;
 
       if (err) {
         return res.send(err.message);
       }
 
-      var room;
-      if (username in app.Rooms) {
-        room = app.Rooms[username];
+      currRoom = room.getRoom(username);
+      currRoom.station = currStation;
+
+      currStation.next(function (err, id) {
+        if (err) {
+          return res.send(err.message)
+        }
+
         res.redirect('/rooms/' + username);
-      } else {
-        room = new app.Room(username);
-        app.Rooms[username] = room;
-        room.station = station;
-        station.next(function (err, id) {
-          if (err) return res.send(err.message);
-          res.redirect('/rooms/' + username);
-        });
-      }
+      });
     });
   });
 
