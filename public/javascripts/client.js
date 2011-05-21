@@ -78,6 +78,7 @@ $(document).ready(function(){
       player.play(id, pos);
       if (bound) {
         listener.unbind('ready', play);
+        bound = false;
       }
     }
 
