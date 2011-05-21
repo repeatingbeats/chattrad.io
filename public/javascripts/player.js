@@ -1,4 +1,154 @@
+var Chattradio = Chattradio || {};
+
+Chattradio.Player = (function(){
+
+  var track = null,
+      seekTo = null,
+      player;
+
+  player = {
+
+    init: function Player_init(flashvars) {
+      flashvars['listener'] = 'Chattradio.RdioListener';
+      var params = { 'allowScriptAccess': 'always' };
+      var attributes = {};
+      swfobject.embedSWF('http://rdio.com/api/swf/',
+                         'rdioswf',
+                         1, 1, '9.0.0',
+                         'expressInstall.swf',
+                         flashvars,
+                         params,
+                         attributes);
+    },
+
+    play: function Player_play(id, pos) {
+      var self = this,
+          swf = Chattradio.rdioswf,
+          volume = sessionStorage.getItem('volume');
+
+      if (volume) {
+        // Init swf player volume
+        swf.rdio_setMute(Boolean(sessionStorage.getItem('mute')));
+        swf.rdio_setVolume(parseInt(volume) / 100);
+      }
+
+      swf.rdio_play(id);
+      if (pos && pos > 0) {
+        // Seek won't work until playback starts :(
+        // Set a flag so we seek if necessary on the state change
+        seekTo = pos;
+      }
+
+      $.getJSON('/info/' + id, function (data) {
+        track = data.result[id];
+        $('#artistinfo').html(track.artist + ' - ' + track.name);
+        $('#albumart').attr('src', track.icon);
+      });
+
+    },
+
+    deferredSeek: function Player_deferredSeek() {
+      if (seekTo) {
+        console.log('seeking to ' + seekTo);
+        Chattradio.rdioswf.rdio_seek(seekTo);
+        seekTo = null;
+      }
+    },
+
+    getCurrentTrack: function Player_getCurrentTrack() {
+      return track;
+    }
+
+  };
+
+  return player;
+
+}());
+
+Chattradio.RdioListener = (function() {
+
+  var isReady = false,
+      player = Chattradio.Player,
+      listener;
+
+  listener = {
+
+    isReady: function () {
+      return isReady;
+    },
+
+    ready: function() {
+      console.log('player ready');
+      Chattradio.rdioswf = $('#rdioswf').get(0);
+      isReady = true;
+      this.trigger('ready');
+    },
+
+    playStateChanged: function (state) {
+      console.log('playStateChanged: ' + state);
+      if (state == 3) {
+        // Now that we're playing, see if we need to seek.
+        player.deferredSeek();
+      }
+    },
+
+    playingTrackChanged: function (track, pos) {
+      console.log('playingTrackChanged: ' + track + ', pos: ' + pos);
+      // pos == -1 means we got to the end of the current track
+      if (pos == -1) {
+        now.trackFinished(player.getCurrentTrack().key);
+      }
+    },
+
+    playingSourceChanged: function (source) {
+      console.log('playingSourceChanced: ' + source);
+    },
+
+    volumeChanged: function (vol) {
+      console.log('volumeChanged: ' + vol);
+    },
+
+    muteChanged: function (mute) {
+      console.log('muteChanged: ' + mute);
+    },
+
+    positionChanged: function (position) {
+      if (position <= 0) { return; }
+
+      var percent = position / Math.floor(player.getCurrentTrack().duration) * 100;
+      $('#seek').css('width', percent + '%');
+      now.updatePosition(position);
+    },
+
+    shuffleChanged: function (shuffle) {
+      console.log('shuffleChanged: ' + shuffle);
+    },
+
+    queueChanged: function (queue) {
+      console.log('queueChanged: ' + queue);
+    },
+
+    repeatChanged: function (repeat) {
+      console.log('repeatChanged: ' + repeat);
+    },
+
+    playingSomewhereElse: function () {
+      console.log('Why would you play somewhere else? Why?');
+    }
+
+  };
+
+  Chattradio.mixin(listener, Chattradio.events);
+
+  return listener;
+
+}());
+
 $(document).ready(function() {
+
+  /* Rdio Flash player setup */
+  $.getJSON('/flashvars', Chattradio.Player.init);
+
   // Volume initialization
   var initVolume = sessionStorage.getItem('volume');
   if (initVolume) {
