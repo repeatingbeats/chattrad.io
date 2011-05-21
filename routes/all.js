@@ -120,7 +120,8 @@ module.exports = function(app) {
 
                                               req.session.user = user.createUser(result.username,
                                                                                  { rdio_key: result.key,
-                                                                                   rdio_icon: result.icon
+                                                                                   rdio_icon: result.icon,
+                                                                                   rdio_url: result.url
                                                                                  });
 
                                               res.redirect('/');

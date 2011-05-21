@@ -37,6 +37,10 @@ $(document).ready(function(){
     var chatlog = $('#chat-log'),
         scrollHeight;
 
+    if (username === now.name) {
+      username = 'You';
+    }
+
     chatlog.append('<br>' + username + ' joined.');
     scrollHeight = chatlog.attr("scrollHeight");
     chatlog.attr("scrollTop", scrollHeight);
@@ -52,11 +56,16 @@ $(document).ready(function(){
         userobj = (users) ? JSON.parse(users) : null;
 
     for (var username in userobj) {
+      var user = userobj[username];
+
       if ($('#' + username).length > 0) { continue; }
 
       userlist.append('<div id="' + username + '" class="chuser">' +
-                        '<span class="chusername">' + username +
-                        '</span></div>');
+                        '<img width="20" height="20" class="chimg" src="' +
+                          user.rdio_icon + '" />' +
+                        '<a href="http://rd.io' + user.rdio_url +
+                          '" class="chusername">' + username +
+                        '</a></div>');
     }
   };
 
