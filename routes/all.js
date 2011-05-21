@@ -23,18 +23,14 @@ module.exports = function(app) {
 
   app.get('/rooms/:id', function (req, res) {
     var currRoom = room.getRoom(req.params.id);
+
+    if (!req.session.oauth_access_token) {
+      return res.redirect('/');
+    }
+
     if (currRoom) {
-      app.Rdio.request(function(err) {
-        res.send(JSON.stringify({ 'oops, room-fail': err.data }));
-      }, {
-        method: 'currentUser',
-        token: req.session.oauth_access_token,
-        token_secret: req.session.oauth_access_token_secret ,
-      }, function (data) {
-        var userUrl = data.result.url.split('/');
-        res.render('room', { username: userUrl[userUrl.length -2],
-                             roomname: currRoom.name });
-      });
+      res.render('room', { username: req.session.user.username,
+                           roomname: currRoom.name });
     } else {
       // create a room?
       res.send('YOU BROKE IT');
@@ -115,10 +111,18 @@ module.exports = function(app) {
                                               console.log('ERR: ' + JSON.stringify(error));
                                             },
                                             { method: 'currentUser',
+                                              extras: 'username,isTrial',
                                               token: req.session.oauth_access_token,
                                               token_secret:
                                                 req.session.oauth_access_token_secret },
                                             function(data) {
+                                              var result = data.result;
+
+                                              req.session.user = user.createUser(result.username,
+                                                                                 { rdio_key: result.key,
+                                                                                   rdio_icon: result.icon
+                                                                                 });
+
                                               res.redirect('/');
                                             });
                          });

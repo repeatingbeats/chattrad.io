@@ -103,7 +103,7 @@ var check = require('validator').check,
     sanitize = require('validator').sanitize
 
 everyone.now.distributeMessage = function(message) {
-  var currUser = user.getUser(this.user.clientId),
+  var currUser = user.getUser(this.now.name, this.user.clientId),
       currRoom = room.getRoom(this.now.room);
 
   message = sanitize(message).trim();
@@ -116,14 +116,12 @@ everyone.now.distributeMessage = function(message) {
 /* A join method for every client */
 everyone.now.join = function(roomname) {
   var currRoom = room.getRoom(roomname),
-      currUser = user.getUser(this.user.clientId);
+      currUser = user.getUser(this.now.name, this.user.clientId);
 
   this.now.room = roomname;
 
-  currUser.username = this.now.name;
-
   // Add the user to our room and nowjs group
-  currRoom.addUser(currUser);
+  currRoom.addClient(currUser, this.user.clientId);
 
   // Start the user at the correct position in the playing song.
   // xxx slloyd Song position needs a magic number to incorporate delays:
@@ -135,7 +133,7 @@ everyone.now.join = function(roomname) {
 
 everyone.now.leave = function(roomname) {
   var currRoom = room.getRoom(roomname),
-      currUser = user.getUser(this.user.clientId);
+      currUser = user.getUser(this.now.name, this.user.clientId);
 
   // XXX - https://github.com/Flotype/now/issues/37
   //   TypeError: Cannot read property '0' of null
@@ -144,12 +142,12 @@ everyone.now.leave = function(roomname) {
   this.now.room = null;
 
   // Remove the user from the room and nowjs group
-  currRoom.removeUser(currUser);
+  currRoom.removeClient(currUser, this.user.clientId);
 }
 
 // A method for all users to report back where they are in a song
 everyone.now.updatePosition = function(pos) {
-  var currUser = user.getUser(this.user.clientId),
+  var currUser = user.getUser(this.now.name, this.user.clientId),
       currRoom = room.getRoom(this.now.room);
 
   // if this user is further along than our last position, update
@@ -161,7 +159,7 @@ everyone.now.updatePosition = function(pos) {
 
 // Clients report when they complete track playback
 everyone.now.trackFinished = function(trackId) {
-  var currUser = user.getUser(this.user.clientId),
+  var currUser = user.getUser(this.now.name, this.user.clientId),
       currRoom = room.getRoom(this.now.room),
       currStation = currRoom.station;
 
