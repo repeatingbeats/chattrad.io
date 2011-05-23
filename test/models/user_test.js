@@ -27,18 +27,6 @@ exports['User'] = testCase({
 
   },
 
-  'pseudo-private attributes': {
-
-    '_token': function User__token(test) {
-      test.done();
-    },
-
-    '_tokensecret': function User__tokensecret(test) {
-      test.done();
-    }
-
-  },
-
   'pseudo-private methods': {
 
     '_ensureClient': function User__ensureClient(test) {
