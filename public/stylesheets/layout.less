@@ -59,38 +59,46 @@ html {
       width: 100%;
 
       #header {
-        /*.background-gradient(top, rgb(234,227,241), rgb(181,220,247));*/
-        border-bottom: 2px solid rgb(200,227,255);
-        height: 96px;
+        background-color: rgb(50,50,50);
+        border-bottom: 2px solid rgb(227,227,227);
+        border-top: none;
+        height: 20px;
         margin: 0;
         min-width: 650px;
         padding: 10px 20px;
         z-index: 9999;
 
         #banner {
-          background: url('/images/banner.png');
+          background: transparent url('/images/banner.png') no-repeat;
           cursor: pointer;
           float: left;
           height: 42px;
-          margin-top: 30px;
+          margin-left: 50px;
           width: 240px;
         }
+      }
+
+      #faceplate {
+        border-bottom: 2px solid rgb(200,227,255);
+        height: 50px;
+        margin: 0;
+        min-width: 650px;
+        padding: 0px 70px;
+        z-index: 9999;
 
         #player {
-          float: right;
-          height: 70px;
-          margin-top: 10px;
+          height: 50px;
           padding: 0;
           position: relative;
-          width: 55%;
+          width: 100%;
           z-index: 9999;
 
           img#albumart {
             background-color: rgb(0,0,0);
-            float: left;
+            left: 0;
             margin: 0;
             padding: 0;
-            position: relative;
+            position: absolute;
             .unselectable();
           }
 
@@ -98,7 +106,7 @@ html {
             background: rgb(100,100,100);
             .border-radius(4px);
             height: 10px;
-            margin-top: 25px;
+            margin-top: 0px;
             margin-left: 100px;
             margin-right: 10px;
             position: relative;
