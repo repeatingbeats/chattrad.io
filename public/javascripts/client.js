@@ -34,20 +34,20 @@ $(document).ready(function(){
   });
 
   now.receiveJoin = function(username) {
-    var chatlog = $('#chat-log'),
+    var chattr = $('#chattr'),
         scrollHeight;
 
     if (username === now.name) {
       username = 'You';
     }
 
-    chatlog.append('<br>' + username + ' joined.');
-    scrollHeight = chatlog.attr("scrollHeight");
-    chatlog.attr("scrollTop", scrollHeight);
+    chattr.append('<div class="notification">' + username + ' joined.</div>');
+    scrollHeight = chattr.attr("scrollHeight");
+    chattr.attr("scrollTop", scrollHeight);
   };
 
   now.receiveLeave = function(username) {
-    $('#chat-log').append('<br>' + username + ' left.');
+    $('#chattr').append('<div class="notification">' + username + ' left.</div>');
     $('#' + username).remove();
   };
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
       if ($('#' + username).length > 0) { continue; }
 
       userlist.append('<div id="' + username + '" class="chuser">' +
-                        '<img width="20" height="20" class="chimg" src="' +
+                        '<img width="24" height="24" class="chimg" src="' +
                           user.rdio_icon + '" />' +
                         '<a href="http://rd.io' + user.rdio_url +
                           '" class="chusername">' + username +
@@ -71,12 +71,15 @@ $(document).ready(function(){
 
   /* Receive a message */
   now.receiveMessage = function(name, message){
-    var chatlog = $('#chat-log'),
+    var chattr = $('#chattr'),
         scrollHeight;
 
-    chatlog.append("<br>" + name + ": " + message);
+    chattr.append('<div class="message">' +
+                    '<span class="whom">' + name + '</span>' +
+                    '<span>' + message + '</span>' +
+                  '</div>');
     scrollHeight = chatlog.attr("scrollHeight");
-    chatlog.attr("scrollTop", scrollHeight);
+    chattr.attr("scrollTop", scrollHeight);
   };
 
   /* Play a song at a position */

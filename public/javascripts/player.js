@@ -41,7 +41,8 @@ Chattradio.Player = (function(){
 
       $.getJSON('/info/' + id, function (data) {
         track = data.result[id];
-        $('#artistinfo').html(track.artist + ' - ' + track.name);
+        $('#songtitle > a').html(track.name);
+        $('#artistname > a').html(track.artist);
         $('#albumart').attr('src', track.icon);
       });
 
@@ -94,6 +95,7 @@ Chattradio.RdioListener = (function() {
 
     playingTrackChanged: function (track, pos) {
       console.log('playingTrackChanged: ' + track + ', pos: ' + pos);
+
       // pos == -1 means we got to the end of the current track
       if (pos == -1) {
         now.trackFinished(player.getCurrentTrack().key);
@@ -114,8 +116,11 @@ Chattradio.RdioListener = (function() {
 
     positionChanged: function (position) {
       if (position <= 0) { return; }
+      var duration = player.getCurrentTrack().duration,
+          percent = position / Math.floor(duration) * 100;
 
-      var percent = position / Math.floor(player.getCurrentTrack().duration) * 100;
+      $('#elapsed').html(calculateTime(position));
+      $('#duration').html(calculateTime(duration));
       $('#seek').css('width', percent + '%');
       now.updatePosition(position);
     },
@@ -143,6 +148,18 @@ Chattradio.RdioListener = (function() {
   return listener;
 
 }());
+
+/* Helper functions */
+function calculateTime(seconds) {
+  var mins = Math.floor(seconds / 60),
+      secs = Math.floor(seconds % 60);
+
+  if (secs < 10) {
+    secs = '0' + secs;
+  }
+
+  return mins + ':' + secs;
+}
 
 $(document).ready(function() {
 

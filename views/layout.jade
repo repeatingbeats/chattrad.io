@@ -13,17 +13,19 @@ html
     #container
       #header
         a#banner(href='/')
-      #faceplate
+      #deck
         #player
-          img#albumart(width=50, height=50)
-          #artisttitle
-            span#artistinfo
-          span#duration(hidden=true) 0:00 / 0:00
+          #songtitle
+            a.songinfo
+          #artistname
+            a.songinfo
+          span#elapsed.ptime 0:00
           #slider
             #seek.preslider
               #seekspot.sliderspot(style='width:15px;position:relative;')
             .postslider
             #seekfill.innerslider
+          span#duration.ptime --:--
           #volbox
             button#volbtn
             #volume
@@ -31,4 +33,5 @@ html
                 #volspot.sliderspot(style='width:12px;position:relative;')
               .postslider
               #volfill.innerslider
+        img#albumart(src='/images/default_art.png', width=75, height=75)
       !=body
