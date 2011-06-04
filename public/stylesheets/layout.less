@@ -79,7 +79,7 @@ html {
       }
 
       #deck {
-        .background-gradient(top, rgb(75,75,75), rgb(25,25,25));
+        .background-gradient(top, bottom, rgb(75,75,75), rgb(25,25,25));
         border-top: 1px solid rgb(125,125,125);
         border-bottom: 1px solid rgb(27,27,27);
         border-right: 1px solid rgb(27,27,27);
@@ -242,7 +242,7 @@ html {
             right: 0;
 
             #status {
-              .background-gradient(top, rgb(225,225,225), rgb(175,175,175));
+              .background-gradient(top, bottom, rgb(225,225,225), rgb(175,175,175));
               background-color: rgb(225,225,225);
               border-top: 1px solid rgb(255,255,255);
               border-bottom: 1px solid rgb(175,175,175);
@@ -503,9 +503,9 @@ html {
   cursor: pointer;
 }
 
-.background-gradient (@point, @start, @stop) {
-  background: -moz-linear-gradient(@point, @start, @stop);
-  background: -webkit-linear-gradient(@point, @start, @stop);
+.background-gradient (@start, @stop, @from, @to) {
+  background: -moz-linear-gradient(@start, @from, @to);
+  background: -webkit-gradient(linear, left @start, left @stop, from(@from), to(@to));
 }
 
 .border-radius (@radius) {
