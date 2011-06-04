@@ -11,5 +11,8 @@
     "now": "0.5.3",
     "request": ">=0.10.0",
     "validator": ">=0.2.0"
+  },
+  "devDependencies": {
+    "nodeunit": "=0.5.1"
   }
 }
