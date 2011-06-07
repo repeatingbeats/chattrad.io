@@ -78,7 +78,7 @@ $(document).ready(function(){
                     '<span class="whom">' + name + '</span>' +
                     '<span>' + message + '</span>' +
                   '</div>');
-    scrollHeight = chatlog.attr("scrollHeight");
+    scrollHeight = chattr.attr("scrollHeight");
     chattr.attr("scrollTop", scrollHeight);
   };
 
