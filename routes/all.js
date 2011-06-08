@@ -38,8 +38,15 @@ module.exports = function(app) {
   });
 
   app.post('/rooms', function (req, res) {
-    var username = req.param('lastfm');
+    var username = req.param('lastfm'),
+        currRoom = room.getRoom(username),
+        roomRoute = '/rooms/' + username;
     console.log('posting username:' + username);
+
+    if (currRoom) {
+      return res.redirect(roomRoute);
+    }
+
     station.getStationForUser(username, function(err, currStation) {
       var currRoom;
 
@@ -47,7 +54,7 @@ module.exports = function(app) {
         return res.send(err.message);
       }
 
-      currRoom = room.getRoom(username);
+      currRoom = room.createRoom(username);
       currRoom.station = currStation;
 
       currStation.next(function (err, id) {

@@ -72,16 +72,35 @@ exports['room'] = testCase({
 
 exports['Exported Methods'] = {
 
+  'createRoom': {
+
+    'creates a new room': function (test) {
+      var createdRoom = Room.createRoom('createRoom-created');
+      test.equal(createdRoom.name, 'createRoom-created');
+      test.done();
+    },
+
+    'throws if the room already exists': function (test) {
+      var throwRoom = Room.createRoom('createRoom-throw');
+      var throwFunc = function () {
+        Room.createRoom('createRoom-throw');
+      };
+      test.throws(throwFunc, Error);
+      test.done();
+    }
+
+  },
+
   'getRoom': {
 
-    'creates new room is room does not exist': function (test) {
+    'returns null if the room does not exist': function (test) {
       var createdRoom = Room.getRoom('getRoom-created');
-      test.equal(createdRoom.name, 'getRoom-created');
+      test.equal(createdRoom, null);
       test.done();
     },
 
     'returns an existing room if the room exists': function (test) {
-      var createdRoom = Room.getRoom('getRoom-exists');
+      var createdRoom = Room.createRoom('getRoom-exists');
       var sameRoom = Room.getRoom('getRoom-exists');
       test.equal(sameRoom, createdRoom);
       test.done();
